@@ -1,8 +1,12 @@
 package main
 
 import (
-	"Proyecto_CEI_Back/data"
-	"Proyecto_CEI_Back/utils"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/logger"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/utils"
+
 	"encoding/json"
 	"fmt"
 	"log"
@@ -13,6 +17,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/spf13/viper"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -74,9 +80,32 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("Servidor escuchando en http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
 
-	http.HandleFunc("/", LoginHandler)
+
+	// http.HandleFunc("/", LoginHandler)
+
+	// Initialize Viper across the application
+	configs.InitializeViper()
+	fmt.Println("Viper initialized...")
+
+	// Initialize Logger across the application
+	logger.InitializeZapCustomLogger()
+	fmt.Println("Zap Custom Logger initialized...")
+
+	// Initialize Oauth2 Services
+	services.InitializeOAuthGoogle()
+	fmt.Println("OAuth2 Services initialized...")
+
+	// Routes for the application
+	http.HandleFunc("/", services.HandleMain)
+	http.HandleFunc("/login-gl", services.HandleGoogleLogin)
+	http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
+
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Servidor escuchando en http://localhost:8080")
+
+	logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
+	log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 }
