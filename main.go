@@ -7,10 +7,13 @@ import (
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/utils"
 
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -21,7 +24,46 @@ import (
 	"github.com/spf13/viper"
 )
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
+func main() {
+
+	http.HandleFunc("/login-usr", LoginUser)
+
+	// Initialize Viper across the application
+	configs.InitializeViper()
+	fmt.Println("Viper initialized...")
+
+	// Initialize Logger across the application
+	logger.InitializeZapCustomLogger()
+	fmt.Println("Zap Custom Logger initialized...")
+
+	// Initialize Oauth2 Services
+	services.InitializeOAuthGoogle()
+	fmt.Println("OAuth2 Services initialized...")
+
+	// Routes for the application
+	http.HandleFunc("/", services.HandleMain)
+	http.HandleFunc("/login-gl", services.HandleGoogleLogin)
+	http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
+
+	//Crear llave secreta
+	key := make([]byte, 64)
+	_, err := rand.Read(key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	secret := base64.StdEncoding.EncodeToString(key)
+	os.Setenv("JWT_SECRET", secret)
+	print(secret)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Servidor escuchando en http://localhost:8080")
+
+	logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
+	log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
+
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
 	var creds data.Credentials
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
@@ -58,54 +100,38 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			},
 		}
 
+		// utilizar llave secreta para firmar el token
+		secretKey := os.Getenv("JWT_SECRET")
+		if secretKey == "" {
+			http.Error(w, "No se ha definido una llave secreta", http.StatusInternalServerError)
+			return
+		}
+
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString(token)
+		tokenString, err := token.SignedString([]byte(secretKey))
 		if err != nil {
 			http.Error(w, "No se pudo generar el token", http.StatusInternalServerError)
 			return
 		}
 
-		// Devuelve el token al cliente
-		http.SetCookie(w, &http.Cookie{
-			Name:    "token",
-			Value:   tokenString,
-			Expires: expirationTime,
-		})
+		// Enviar el token en la respuesta
+		json.NewEncoder(w).Encode(map[string]string{"tokenJWT": tokenString})
+
 	}
 
 }
 
-func admin(w http.ResponseWriter, r *http.Request) {
-	//logica de admin
-}
+func LoginTokenJWS(w http.ResponseWriter, r *http.Request) {
+	//logica de login con token JWS.
 
-func main() {
+	//Obtener el token JWS
+	var tokenJWS string
+	err := json.NewDecoder(r.Body).Decode(&tokenJWS)
+	if err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
 
-
-	// http.HandleFunc("/", LoginHandler)
-
-	// Initialize Viper across the application
-	configs.InitializeViper()
-	fmt.Println("Viper initialized...")
-
-	// Initialize Logger across the application
-	logger.InitializeZapCustomLogger()
-	fmt.Println("Zap Custom Logger initialized...")
-
-	// Initialize Oauth2 Services
-	services.InitializeOAuthGoogle()
-	fmt.Println("OAuth2 Services initialized...")
-
-	// Routes for the application
-	http.HandleFunc("/", services.HandleMain)
-	http.HandleFunc("/login-gl", services.HandleGoogleLogin)
-	http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
-
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
-	fmt.Println("Servidor escuchando en http://localhost:8080")
-
-	logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
-	log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
+	// TODO terminar el coso
 
 }
