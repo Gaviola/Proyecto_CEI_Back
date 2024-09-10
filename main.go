@@ -1,16 +1,19 @@
 package main
 
 import (
-	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/logger"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/utils"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/routes"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"strings"
 
 	"crypto/rand"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
 	"log"
 	"net/http"
 	"os"
@@ -18,15 +21,19 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/dgrijalva/jwt-go"
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/spf13/viper"
 )
 
 func main() {
 
-	http.HandleFunc("/login-usr", LoginUser)
+	r := chi.NewRouter()
+
+	// Middlewares
+	r.Use(middleware.Logger)
+	r.Use(middleware.Timeout(60 * time.Second))
+
+	// Rutas de la aplicacion
+	routes.LoginRoutes(r)
 
 	// Initialize Viper across the application
 	configs.InitializeViper()
@@ -40,11 +47,6 @@ func main() {
 	services.InitializeOAuthGoogle()
 	fmt.Println("OAuth2 Services initialized...")
 
-	// Routes for the application
-	http.HandleFunc("/", services.HandleMain)
-	http.HandleFunc("/login-gl", services.HandleGoogleLogin)
-	http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
-
 	//Crear llave secreta
 	key := make([]byte, 64)
 	_, err := rand.Read(key)
@@ -52,86 +54,51 @@ func main() {
 		log.Fatal(err)
 	}
 	secret := base64.StdEncoding.EncodeToString(key)
-	os.Setenv("JWT_SECRET", secret)
-	print(secret)
+	err = os.Setenv("JWT_SECRET", secret)
+	if err != nil {
+		http.Error(nil, "Error al setear la variables de entorno", http.StatusInternalServerError)
+		return
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
 	fmt.Println("Servidor escuchando en http://localhost:8080")
-
 	logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
 	log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 }
 
-func LoginUser(w http.ResponseWriter, r *http.Request) {
-	var creds data.Credentials
-	err := json.NewDecoder(r.Body).Decode(&creds)
-	if err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
-		return
-	}
+// Middleware para verificar el token de autorización en las rutas
 
-	// Busca el usuario en la base de datos segun el hash de la contraseña y username
-	var hash []byte
-	hash, err = bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
-	if err != nil {
-		http.Error(w, "Error de servidor", http.StatusInternalServerError)
-		return
-	}
-	var isValid bool
-	//Existe la posibilidad que haya colisiones??
-	isValid, err = utils.DBExistUser(hash, creds.Username)
-	if err != nil {
-		if !isValid {
-			http.Error(w, "Usuario no encontrado", http.StatusUnauthorized)
-			return
-		}
-		http.Error(w, "Error de servidor", http.StatusInternalServerError)
-		return
-	}
-
-	if isValid {
-		// Genera un token JWT
-		expirationTime := time.Now().Add(5 * time.Minute)
-		claims := &data.Claims{
-			Username: creds.Username,
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: expirationTime.Unix(),
-			},
-		}
-
-		// utilizar llave secreta para firmar el token
-		secretKey := os.Getenv("JWT_SECRET")
-		if secretKey == "" {
-			http.Error(w, "No se ha definido una llave secreta", http.StatusInternalServerError)
+func authMiddleware(next http.Handler) http.Handler {
+	var jwtKey = []byte(os.Getenv("JWT_SECRET"))
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Obtener el token del header Authorization
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			http.Error(w, "Falta el header Authorization", http.StatusUnauthorized)
 			return
 		}
 
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString([]byte(secretKey))
-		if err != nil {
-			http.Error(w, "No se pudo generar el token", http.StatusInternalServerError)
+		// Verificar que el formato sea "Bearer <token>"
+		parts := strings.Split(authHeader, " ")
+		if len(parts) != 2 || parts[0] != "Bearer" {
+			http.Error(w, "Formato de autorización inválido", http.StatusUnauthorized)
 			return
 		}
 
-		// Enviar el token en la respuesta
-		json.NewEncoder(w).Encode(map[string]string{"tokenJWT": tokenString})
+		tokenStr := parts[1]
 
-	}
+		// Parsear y validar el token
+		claims := &data.Claims{}
+		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+			return jwtKey, nil
+		})
 
-}
+		if err != nil || !token.Valid {
+			http.Error(w, "Token inválido o expirado", http.StatusUnauthorized)
+			return
+		}
 
-func LoginTokenJWS(w http.ResponseWriter, r *http.Request) {
-	//logica de login con token JWS.
-
-	//Obtener el token JWS
-	var tokenJWS string
-	err := json.NewDecoder(r.Body).Decode(&tokenJWS)
-	if err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
-		return
-	}
-
-	// TODO terminar el coso
-
+		// Token válido, continuar con la solicitud
+		next.ServeHTTP(w, r)
+	})
 }

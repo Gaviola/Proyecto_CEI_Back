@@ -9,6 +9,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// connect
+/*
+Conecta a la base de datos y devuelve un puntero a la conexion.
+Devuelve nil si hay un error en la conexion.
+*/
 func connect() *sql.DB {
 	connStr := "host=localhost dbname=CEI user=fgaviola password=facu1234 sslmode=disable"
 
@@ -17,21 +22,32 @@ func connect() *sql.DB {
 		log.Fatal(err)
 		defer db.Close()
 	}
-	db.Ping()
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
 
 	return db
 
 }
 
-func DBExistUser(PassHash []byte, user string) (bool, error) {
-	prueba := data.User{}
+// DBExistUser
+/*
+Busca un usuario en la base de datos segun el hash de la contraseña y el username.
+Devuelve el usuario correspondiente si el usuario existe.
+Devuelve un usuario vacio si el usuario no existe o si hay un error en la base de datos.
+*/
+func DBExistUser(PassHash []byte, user string) (data.User, error) {
+	findUser := data.User{}
 	db := connect()
-	query := "SELECT * FROM users WHERE name = 'facu'"
-	result := db.QueryRow(query).Scan(&prueba.ID, &prueba.Name, &prueba.Lastname, &prueba.Student_id, &prueba.Email, &prueba.Phone, &prueba.Role, &prueba.Dni, &prueba.School, &prueba.Hash, &prueba.Salt)
+	// TODO modificar la query para que busque por el hash y el username
+	//query := "SELECT * FROM users WHERE name = 'facu'"
+	query := "SELECT * FROM users WHERE name = '" + user + "' AND hash = '" + string(PassHash) + "'"
+	result := db.QueryRow(query).Scan(&findUser.ID, &findUser.Name, &findUser.Lastname, &findUser.Student_id, &findUser.Email, &findUser.Phone, &findUser.Role, &findUser.Dni, &findUser.School, &findUser.Hash)
 
 	if result != nil {
-		return false, result
+		return findUser, result
 	}
-
-	return true, nil
+	return findUser, nil
 }
