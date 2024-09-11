@@ -29,3 +29,6 @@ go.work.sum
 .vscode/
 
 *.yml
+
+log.txt
+*.sql
