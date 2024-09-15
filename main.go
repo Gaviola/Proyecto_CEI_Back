@@ -34,6 +34,7 @@ func main() {
 
 	// Rutas de la aplicacion
 	routes.LoginRoutes(r)
+	routes.RegisterRoutes(r)
 
 	// Initialize Viper across the application
 	configs.InitializeViper()
