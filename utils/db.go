@@ -2,6 +2,7 @@ package utils
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
@@ -47,9 +48,7 @@ Devuelve un usuario vacio si el usuario no existe o si hay un error en la base d
 func DBExistUser(PassHash []byte, user string) (data.User, error) {
 	findUser := data.User{}
 	db := connect(false)
-	// TODO modificar la query para que busque por el hash y el username
-	//query := "SELECT * FROM users WHERE name = 'facu'"
-	query := "SELECT * FROM users WHERE name = '" + user + "' AND hash = '" + string(PassHash) + "'"
+	query := "SELECT * FROM users WHERE email = '" + user + "' AND hash = '" + string(PassHash) + "'"
 	result := db.QueryRow(query).Scan(&findUser.ID, &findUser.Name, &findUser.Lastname, &findUser.Student_id, &findUser.Email, &findUser.Phone, &findUser.Role, &findUser.Dni, &findUser.School, &findUser.Hash)
 
 	if result != nil {
@@ -58,6 +57,43 @@ func DBExistUser(PassHash []byte, user string) (data.User, error) {
 	return findUser, nil
 }
 
+// DBGetUserByEmail
+/*
+Busca un usuario en la base de datos segun el email. Devuelve el usuario correspondiente si el usuario existe.
+Devuelve un usuario vacio si el usuario no existe o si hay un error en la base de datos.
+*/
+func DBGetUserByEmail(email string) (data.User, error) {
+	var user data.User
+	db := connect(false)
+	query := "SELECT * FROM users WHERE email = $1"
+	err := db.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Lastname, &user.Student_id, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.School, &user.Hash)
+	if errors.Is(err, sql.ErrNoRows) {
+		return user, nil
+	}
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
+// DBSaveUser
+/*
+Guarda un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBSaveUser(user data.User) error {
+	db := connect(false)
+	query := "INSERT INTO users (name, lastname, student_ID, email, phone, role, DNI, school, hash, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
+	_, err := db.Exec(query, user.Name, user.Lastname, user.Student_id, user.Email, user.Phone, user.Role, user.Dni, user.School, user.Hash, user.Status)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBShowItemTypes
+/*
+Devuelve una lista con los tipos de items que hay en la base de datos.
+*/
 func DBShowItemTypes() []data.ItemType {
 	var itemTypes []data.ItemType
 
@@ -79,12 +115,16 @@ func DBShowItemTypes() []data.ItemType {
 	return itemTypes
 }
 
+// DBShowItems
+/*
+Devuelve una lista con los items que hay en la base de datos.
+*/
 func DBShowItems() []data.Item {
 	var items []data.Item
 
 	db := connect(false)
 	query := "select it.id, it.name, e.code, e.price from element e join item_type it on e.type_id = it.id;"
-	
+
 	rows, err := db.Query(query)
 
 	if err != nil {
