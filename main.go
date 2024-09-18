@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"strings"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
@@ -58,6 +59,7 @@ func main() {
 	fmt.Println("[2] \tGoogle Login")
 	fmt.Println("[3] \tPrueba de ItemTypes")
 	fmt.Println("[4] \tPrueba de Items")
+	fmt.Println("[5] \tPrueba de Crear ItemType")
 	fmt.Println("[OTRO] \tSalir")
 
 	fmt.Print("> Ingrese una opción: ")
@@ -97,16 +99,59 @@ func main() {
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 	case 3:
-		itemTypes := utils.DBShowItemTypes()
-		for _, itemType := range itemTypes {
+		itemTypesJSON, err := utils.DBShowItemTypes()
+		// Print item types in JSON
+		for _, itemType := range strings.Split(string(itemTypesJSON), "},") {
 			fmt.Println(itemType)
+		}
+		if err != nil {
+			log.Fatal(err)
 		}
 
 	case 4:
-		items := utils.DBShowItems()
-		for _, item := range items {
+		itemsJSON, err := utils.DBShowItems()
+		// Print items in JSON separated by line breaks
+		for _, item := range strings.Split(string(itemsJSON), "},") {
 			fmt.Println(item)
 		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+	case 5:
+		in := bufio.NewReader(os.Stdin)
+		// Preguntar por los datos del nuevo ItemType
+		var name string
+		var isGenericStr string
+		var isGeneric bool
+
+
+		fmt.Print("Nombre del nuevo ItemType: ")
+		name, _ = in.ReadString('\n')
+		
+
+		fmt.Print("Es genérico? (s/n): ")
+		isGenericStr, _ = in.ReadString('\n')
+		if isGenericStr == "s\n" {
+			isGeneric = true
+		} else {
+			isGeneric = false
+		}
+
+		// Crear el nuevo ItemType
+		newItemType := data.ItemType{
+			Name:      name,
+			IsGeneric: isGeneric,
+		}
+
+		// Insertar el nuevo ItemType en la base de datos
+		err := utils.DBSaveItemType(newItemType)
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			fmt.Println("ItemType creado con éxito")
+		}
+
 	default:
 		fmt.Println("Saliendo...")
 	}
