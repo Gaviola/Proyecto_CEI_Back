@@ -2,9 +2,9 @@ package routes
 
 import (
 	"encoding/json"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/utils"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -21,8 +21,8 @@ func LoginRoutes(r chi.Router) {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
-	var creds data.Credentials
-	var user data.User
+	var creds models.Credentials
+	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
@@ -36,7 +36,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error de servidor", http.StatusInternalServerError)
 		return
 	}
-	user, err = utils.DBExistUser(hash, creds.Username)
+	user, err = repositories.DBExistUser(hash, creds.Username)
 	if err != nil {
 		if user.IsEmpty() {
 			http.Error(w, "Usuario no encontrado", http.StatusUnauthorized)
@@ -49,7 +49,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	if !user.IsEmpty() {
 		// Genera un token JWT
 		expirationTime := time.Now().Add(5 * time.Minute)
-		claims := &data.Claims{
+		claims := &models.Claims{
 			Username: user.Name,
 			Role:     user.Role,
 			StandardClaims: jwt.StandardClaims{

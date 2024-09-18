@@ -2,8 +2,8 @@ package routes
 
 import (
 	"encoding/json"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/utils"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 )
@@ -20,7 +20,7 @@ Recibe los datos de un nuevo usuario, verifica que los campos sean correctos y l
 */
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	//Recibo los datos del usuario desde el frontend y los guardo en la base de datos
-	newUser := data.User{}
+	newUser := models.User{}
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
@@ -28,7 +28,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Verifico que no se encuentre ya registrado
-	existingUser, err := utils.DBGetUserByEmail(newUser.Email)
+	existingUser, err := repositories.DBGetUserByEmail(newUser.Email)
 	if err != nil {
 		http.Error(w, "Error checking email", http.StatusInternalServerError)
 		return
@@ -39,7 +39,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUser.IsVerified = false
-	err = utils.DBSaveUser(newUser)
+	err = repositories.DBSaveUser(newUser)
 	if err != nil {
 		http.Error(w, "Error saving user", http.StatusInternalServerError)
 		return

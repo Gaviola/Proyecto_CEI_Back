@@ -1,4 +1,4 @@
-package data
+package models
 
 import jwt "github.com/dgrijalva/jwt-go"
 

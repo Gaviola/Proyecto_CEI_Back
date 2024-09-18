@@ -1,18 +1,21 @@
 package routes
 
 import (
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/middlewares"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 )
 
 func AdminRoutes(r chi.Router) {
 	r.Route("/admin", func(r chi.Router) {
-		r.Post("/createUser", CreateUser) // Crear un usuario
-		r.Put("/deleteUser", DeleteUser)  // Eliminar un usuario
-		r.Put("/updateUser", UpdateUser)  // Actualizar un usuario
-		r.Get("/getUsers", GetUsers)      // Obtener todos los usuarios
-		r.Get("/getUser", GetUser)        // Obtener un usuario
-		r.Put("/verifyUser", VerifyUser)  // Verificar un usuario
+		r.Use(middlewares.AuthMiddleware)  // middleware de verificacion de token
+		r.Use(middlewares.AdminMiddleware) // middleware de verificacion de admin
+		r.Post("/createUser", CreateUser)  // Crear un usuario
+		r.Put("/deleteUser", DeleteUser)   // Eliminar un usuario
+		r.Put("/updateUser", UpdateUser)   // Actualizar un usuario
+		r.Get("/getUsers", GetUsers)       // Obtener todos los usuarios
+		r.Get("/getUser", GetUser)         // Obtener un usuario
+		r.Put("/verifyUser", VerifyUser)   // Verificar un usuario
 		//TODO manejo de items
 		//TODO manejo de prestamos
 	})
@@ -23,7 +26,7 @@ func AdminRoutes(r chi.Router) {
 Recibe los datos de un nuevo usuario, verifica que los campos sean correctos y los guarda en la base de datos
 */
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+
 }
 
 // DeleteUser

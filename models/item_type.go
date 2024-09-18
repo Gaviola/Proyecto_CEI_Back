@@ -1,4 +1,4 @@
-package data
+package models
 
 type ItemType struct {
 	ID        int

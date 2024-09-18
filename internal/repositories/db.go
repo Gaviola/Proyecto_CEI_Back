@@ -1,11 +1,11 @@
-package utils
+package repositories
 
 import (
 	"database/sql"
 	"errors"
 	"log"
 
-	"github.com/Gaviola/Proyecto_CEI_Back.git/data"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 
 	_ "github.com/lib/pq"
 )
@@ -45,8 +45,8 @@ Busca un usuario en la base de datos segun el hash de la contraseña y el userna
 Devuelve el usuario correspondiente si el usuario existe.
 Devuelve un usuario vacio si el usuario no existe o si hay un error en la base de datos.
 */
-func DBExistUser(passHash []byte, user string) (data.User, error) {
-	findUser := data.User{}
+func DBExistUser(passHash []byte, user string) (models.User, error) {
+	findUser := models.User{}
 	db := connect(false)
 	query := "SELECT * FROM users WHERE email = $1 AND hash = $2"
 	result := db.QueryRow(query, user, passHash).Scan(&findUser.ID, &findUser.Name, &findUser.Lastname, &findUser.StudentId, &findUser.Email, &findUser.Phone, &findUser.Role, &findUser.Dni, &findUser.CreatorId, &findUser.School, &findUser.IsVerified, &findUser.Hash)
@@ -62,8 +62,8 @@ func DBExistUser(passHash []byte, user string) (data.User, error) {
 Busca un usuario en la base de datos segun el email. Devuelve el usuario correspondiente si el usuario existe.
 Devuelve un usuario vacio si el usuario no existe o si hay un error en la base de datos.
 */
-func DBGetUserByEmail(email string) (data.User, error) {
-	var user data.User
+func DBGetUserByEmail(email string) (models.User, error) {
+	var user models.User
 	db := connect(false)
 	query := "SELECT * FROM users WHERE email = $1"
 	err := db.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
@@ -80,7 +80,7 @@ func DBGetUserByEmail(email string) (data.User, error) {
 /*
 Guarda un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveUser(user data.User) error {
+func DBSaveUser(user models.User) error {
 	db := connect(false)
 	query := "INSERT INTO users (name, lastname, studentID, email, phone, role, DNI, creatorid, school, isverified, hash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
 	_, err := db.Exec(query, user.Name, user.Lastname, user.StudentId, user.Email, user.Phone, user.Role, user.Dni, user.CreatorId, user.School, user.IsVerified, user.Hash)
@@ -95,8 +95,8 @@ func DBSaveUser(user data.User) error {
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
 */
-func DBShowItemTypes() []data.ItemType {
-	var itemTypes []data.ItemType
+func DBShowItemTypes() []models.ItemType {
+	var itemTypes []models.ItemType
 
 	db := connect(false)
 	query := "SELECT * FROM typeitem"
@@ -106,7 +106,7 @@ func DBShowItemTypes() []data.ItemType {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var itemType data.ItemType
+		var itemType models.ItemType
 		err := rows.Scan(&itemType.ID, &itemType.Name, &itemType.IsGeneric)
 		if err != nil {
 			log.Fatal(err)
@@ -120,8 +120,8 @@ func DBShowItemTypes() []data.ItemType {
 /*
 Devuelve una lista con los items que hay en la base de datos.
 */
-func DBShowItems() []data.Item {
-	var items []data.Item
+func DBShowItems() []models.Item {
+	var items []models.Item
 
 	db := connect(false)
 	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
@@ -133,7 +133,7 @@ func DBShowItems() []data.Item {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var item data.Item
+		var item models.Item
 		err := rows.Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
 		if err != nil {
 			log.Fatal(err)
