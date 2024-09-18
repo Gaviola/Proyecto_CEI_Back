@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"log"
 
@@ -21,7 +22,7 @@ func connect(isFacu bool) *sql.DB {
 	if isFacu {
 		connStr = "host=localhost dbname=CEI user=fgaviola password=facu1234 sslmode=disable"
 	} else {
-		connStr = "host=localhost dbname=cei user=agus password=0811 sslmode=disable"
+		connStr = "host=localhost dbname=cei_db user=agus password=0811 sslmode=disable"
 	}
 
 	db, err := sql.Open("postgres", connStr)
@@ -95,8 +96,8 @@ func DBSaveUser(user models.User) error {
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
 */
-func DBShowItemTypes() []models.ItemType {
-	var itemTypes []models.ItemType
+func DBShowItemTypes() ([]byte, error) {
+	var itemTypes []data.ItemType
 
 	db := connect(false)
 	query := "SELECT * FROM typeitem"
@@ -106,40 +107,110 @@ func DBShowItemTypes() []models.ItemType {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var itemType models.ItemType
+		var itemType data.ItemType
 		err := rows.Scan(&itemType.ID, &itemType.Name, &itemType.IsGeneric)
 		if err != nil {
 			log.Fatal(err)
 		}
 		itemTypes = append(itemTypes, itemType)
 	}
-	return itemTypes
+
+	// Convertir a JSON
+	jsonData, err := json.Marshal(itemTypes)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
 }
 
 // DBShowItems
 /*
-Devuelve una lista con los items que hay en la base de datos.
+Devuelve una lista con los items que hay en la base de datos en formato JSON.
 */
-func DBShowItems() []models.Item {
-	var items []models.Item
+func DBShowItems() ([]byte, error) {
+	var items []data.Item
 
 	db := connect(false)
 	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
 
 	rows, err := db.Query(query)
-
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer rows.Close()
+
 	for rows.Next() {
-		var item models.Item
+		var item data.Item
 		err := rows.Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		items = append(items, item)
 	}
 
-	return items
+	// Convertir a JSON
+	jsonData, err := json.Marshal(items)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
+}
+
+// DBSaveItemType
+/*
+Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBSaveItemType(itemType data.ItemType) error {
+	db := connect(false)
+	query := "INSERT INTO typeitem (name, isgeneric) VALUES ($1, $2)"
+	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBSaveItem
+/*
+Guarda un item en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBSaveItem(item data.Item) error {
+
+	db := connect(false)
+	query := "INSERT INTO item (typeid, code, price) VALUES ($1, $2, $3)"
+	_, err := db.Exec(query, item.ItemType, item.Code, item.Price)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBUpdateItemType
+/*
+Actualiza un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBUpdateItemType(itemType data.ItemType) error {
+	db := connect(false)
+	query := "UPDATE typeitem SET name = $1, isgeneric = $2 WHERE id = $3"
+	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric, itemType.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBUpdateItem
+/*
+Actualiza un item en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBUpdateItem(item data.Item) error {
+	db := connect(false)
+	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
+	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
