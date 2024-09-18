@@ -10,8 +10,7 @@ import (
 
 func RegisterRoutes(r chi.Router) {
 	r.Route("/register", func(r chi.Router) {
-		r.Post("/user", LoginUser)     // registro manual
-		r.Post("/google", LoginGoogle) // registo con Google (requiere de verificaciones extras)
+		r.Post("/user", LoginUser) // registro manual
 	})
 }
 
@@ -38,8 +37,8 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Email already in use", http.StatusConflict)
 		return
 	}
-	// Seria buena idea implementar el campo status?
-	newUser.Status = "pending"
+
+	newUser.IsVerified = false
 	err = utils.DBSaveUser(newUser)
 	if err != nil {
 		http.Error(w, "Error saving user", http.StatusInternalServerError)
@@ -47,9 +46,9 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]string{"message": "User registered, pending approval"})
-}
-
-func RegisterGoogle(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	err = json.NewEncoder(w).Encode(map[string]string{"message": "User registered, pending approval"})
+	if err != nil {
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+		return
+	}
 }
