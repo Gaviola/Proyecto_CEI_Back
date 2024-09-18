@@ -38,6 +38,7 @@ func main() {
 	// Rutas de la aplicacion
 	routes.LoginRoutes(r)
 	routes.RegisterRoutes(r)
+	routes.AdminRoutes(r)
 
 	// Initialize Viper across the application
 	configs.InitializeViper()
@@ -82,7 +83,7 @@ func main() {
 		fmt.Println("Servidor escuchando en http://localhost:8080")
 		logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
-		
+
 	case 2:
 		// Routes for the application
 		http.HandleFunc("/", services.HandleMain)
