@@ -10,6 +10,7 @@ import (
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/routes"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 

@@ -37,7 +37,6 @@ func connect(isFacu bool) *sql.DB {
 	}
 
 	return db
-
 }
 
 // DBExistUser
@@ -285,3 +284,128 @@ func DBUpdateItem(item models.Item) error {
 	}
 	return nil
 }
+
+// DBShowLoans
+/*
+Devuelve una lista con los prestamos que hay en la base de datos en formato JSON.
+*/
+func DBShowLoans() ([]byte, error) {
+	var loans []models.Loan
+
+	db := connect(false)
+	query := "SELECT * FROM loan"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var loan models.Loan
+		err := rows.Scan(&loan.ID, &loan.Status, &loan.UserID, &loan.AdminID, &loan.CreationDate, &loan.EndingDate, &loan.ReturnDate, &loan.Observation, &loan.Price, &loan.PaymentMethod)
+		if err != nil {
+			return nil, err
+		}
+		loans = append(loans, loan)
+	}
+
+	// Convertir a JSON
+	jsonData, err := json.Marshal(loans)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
+}
+
+// DBSaveLoan
+/*
+Guarda un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBSaveLoan(loan models.Loan) error {
+	db := connect(false)
+	query := "INSERT INTO loan (status, userid, adminid, creationdate, endingdate, returndate, observation, price, paymentmethod) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBUpdateLoan
+/*
+Actualiza un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBUpdateLoan(loan models.Loan) error {
+	db := connect(false)
+	query := "UPDATE loan SET status = $1, userid = $2, adminid = $3, creationdate = $4, endingdate = $5, returndate = $6, observation = $7, price = $8, paymentmethod = $9 WHERE id = $10"
+	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod, loan.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBShowLoanItems
+/*
+Devuelve una lista con los items de un prestamo en formato JSON.
+*/
+func DBShowLoanItems(loanID int) ([]byte, error) {
+	var loanItems []models.LoanItem
+
+	db := connect(false)
+	query := "SELECT * FROM loanitem WHERE loanid = $1"
+	rows, err := db.Query(query, loanID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var loanItem models.LoanItem
+		err := rows.Scan(&loanItem.LoanID, &loanItem.ItemID)
+		if err != nil {
+			return nil, err
+		}
+		loanItems = append(loanItems, loanItem)
+	}
+
+	// Convertir a JSON
+	jsonData, err := json.Marshal(loanItems)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
+}
+
+// DBSaveLoanItem
+/*
+Guarda un item de un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBSaveLoanItem(loanItem models.LoanItem) error {
+	db := connect(false)
+	query := "INSERT INTO loanitem (loanid, itemid) VALUES ($1, $2)"
+	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBUpdateLoanItem
+/*
+Actualiza un item de un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBUpdateLoanItem(loanItem models.LoanItem) error {
+	db := connect(false)
+	query := "UPDATE loanitem SET loanid = $1, itemid = $2 WHERE loanid = $3 AND itemid = $4"
+	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID, loanItem.LoanID, loanItem.ItemID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
+
