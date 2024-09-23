@@ -58,6 +58,21 @@ func DBExistUser(passHash []byte, user string) (models.User, error) {
 	return findUser, nil
 }
 
+// DBCheckUser
+/*
+Busca un usuario en la base de datos segun el id. Devuelve true si el usuario existe. Devuelve false si el usuario no
+existe o si hay un error en la base de datos.
+*/
+func DBCheckUser(mail string) (bool, error) {
+	db := connect(false)
+	query := "SELECT * FROM users WHERE email = $1"
+	result := db.QueryRow(query, mail)
+	if result != nil {
+		return false, result.Err()
+	}
+	return true, nil
+}
+
 // DBGetUserByEmail
 /*
 Busca un usuario en la base de datos segun el email. Devuelve el usuario correspondiente si el usuario existe.
@@ -68,6 +83,24 @@ func DBGetUserByEmail(email string) (models.User, error) {
 	db := connect(false)
 	query := "SELECT * FROM users WHERE email = $1"
 	err := db.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
+	if errors.Is(err, sql.ErrNoRows) {
+		return user, nil
+	}
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
+// DBGetUserByID
+/*
+Busca un usuario en la base de datos segun el id. Devuelve el usuario correspondiente si el usuario existe.
+*/
+func DBGetUserByID(id int) (models.User, error) {
+	var user models.User
+	db := connect(false)
+	query := "SELECT * FROM users WHERE id = $1"
+	err := db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
 	if errors.Is(err, sql.ErrNoRows) {
 		return user, nil
 	}
@@ -92,12 +125,50 @@ func DBSaveUser(user models.User) error {
 	return nil
 }
 
+// DBDeleteUser
+/*
+Elimina un usuario de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
+*/
+func DBDeleteUser(id int) error {
+	db := connect(false)
+	query := "DELETE FROM users WHERE id = $1"
+	_, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBGetAllUsers
+/*
+Devuelve una lista con todos los usuarios que hay en la base de datos.
+*/
+func DBGetAllUsers() ([]models.User, error) {
+	var users []models.User
+	db := connect(false)
+	query := "SELECT * FROM users"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var user models.User
+		err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}
+
 // DBShowItemTypes
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
 */
 func DBShowItemTypes() ([]byte, error) {
-	var itemTypes []data.ItemType
+	var itemTypes []models.ItemType
 
 	db := connect(false)
 	query := "SELECT * FROM typeitem"
@@ -107,7 +178,7 @@ func DBShowItemTypes() ([]byte, error) {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var itemType data.ItemType
+		var itemType models.ItemType
 		err := rows.Scan(&itemType.ID, &itemType.Name, &itemType.IsGeneric)
 		if err != nil {
 			log.Fatal(err)
@@ -129,7 +200,7 @@ func DBShowItemTypes() ([]byte, error) {
 Devuelve una lista con los items que hay en la base de datos en formato JSON.
 */
 func DBShowItems() ([]byte, error) {
-	var items []data.Item
+	var items []models.Item
 
 	db := connect(false)
 	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
@@ -141,7 +212,7 @@ func DBShowItems() ([]byte, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var item data.Item
+		var item models.Item
 		err := rows.Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
 		if err != nil {
 			return nil, err
@@ -162,7 +233,7 @@ func DBShowItems() ([]byte, error) {
 /*
 Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveItemType(itemType data.ItemType) error {
+func DBSaveItemType(itemType models.ItemType) error {
 	db := connect(false)
 	query := "INSERT INTO typeitem (name, isgeneric) VALUES ($1, $2)"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric)
@@ -176,7 +247,7 @@ func DBSaveItemType(itemType data.ItemType) error {
 /*
 Guarda un item en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveItem(item data.Item) error {
+func DBSaveItem(item models.Item) error {
 
 	db := connect(false)
 	query := "INSERT INTO item (typeid, code, price) VALUES ($1, $2, $3)"
@@ -191,7 +262,7 @@ func DBSaveItem(item data.Item) error {
 /*
 Actualiza un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBUpdateItemType(itemType data.ItemType) error {
+func DBUpdateItemType(itemType models.ItemType) error {
 	db := connect(false)
 	query := "UPDATE typeitem SET name = $1, isgeneric = $2 WHERE id = $3"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric, itemType.ID)
@@ -205,7 +276,7 @@ func DBUpdateItemType(itemType data.ItemType) error {
 /*
 Actualiza un item en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBUpdateItem(item data.Item) error {
+func DBUpdateItem(item models.Item) error {
 	db := connect(false)
 	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
 	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)

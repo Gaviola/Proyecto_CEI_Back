@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"strings"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
@@ -96,7 +97,7 @@ func main() {
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 	case 3:
-		itemTypesJSON, err := utils.DBShowItemTypes()
+		itemTypesJSON, err := repositories.DBShowItemTypes()
 		// Print item types in JSON
 		for _, itemType := range strings.Split(string(itemTypesJSON), "},") {
 			fmt.Println(itemType)
@@ -106,7 +107,7 @@ func main() {
 		}
 
 	case 4:
-		itemsJSON, err := utils.DBShowItems()
+		itemsJSON, err := repositories.DBShowItems()
 		// Print items in JSON separated by line breaks
 		for _, item := range strings.Split(string(itemsJSON), "},") {
 			fmt.Println(item)
@@ -122,10 +123,8 @@ func main() {
 		var isGenericStr string
 		var isGeneric bool
 
-
 		fmt.Print("Nombre del nuevo ItemType: ")
 		name, _ = in.ReadString('\n')
-
 
 		fmt.Print("Es genérico? (s/n): ")
 		isGenericStr, _ = in.ReadString('\n')
@@ -136,13 +135,13 @@ func main() {
 		}
 
 		// Crear el nuevo ItemType
-		newItemType := data.ItemType{
+		newItemType := models.ItemType{
 			Name:      name,
 			IsGeneric: isGeneric,
 		}
 
 		// Insertar el nuevo ItemType en la base de datos
-		err := utils.DBSaveItemType(newItemType)
+		err := repositories.DBSaveItemType(newItemType)
 		if err != nil {
 			log.Fatal(err)
 		} else {
