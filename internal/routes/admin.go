@@ -14,13 +14,13 @@ func AdminRoutes(r chi.Router) {
 	r.Route("/admin", func(r chi.Router) {
 		r.Use(middlewares.AuthMiddleware)  // middleware de verificacion de token
 		r.Use(middlewares.AdminMiddleware) // middleware de verificacion de admin
+
 		r.Post("/", CreateUser)            // Crear un usuario
 		r.Delete("/{userID}", DeleteUser)  // Eliminar un usuario
 		r.Patch("/{userID}", UpdateUser)   // Actualizar un usuario
 		r.Get("/", GetUsers)               // Obtener todos los usuarios
 		r.Get("/{userID}", GetUser)        // Obtener un usuario
 		r.Put("/{userID}", VerifyUser)     // Verificar un usuario
-		//TODO manejo de items
 
 		r.Post("/createUser", CreateUser)  // Crear un usuario
 		r.Put("/deleteUser", DeleteUser)   // Eliminar un usuario
@@ -29,19 +29,47 @@ func AdminRoutes(r chi.Router) {
 		r.Get("/getUser", GetUser)         // Obtener un usuario
 		r.Put("/verifyUser", VerifyUser)   // Verificar un usuario
 
+		r.Post("/", createItemType) 				// Crear un tipo de item
+		r.Delete("/{itemTypeID}", DeleteItemType)	// Eliminar un tipo de item
+		r.Patch("/{itemTypeID}", UpdateItemType)	// Actualizar un tipo de item
+		r.Get("/", GetItemTypes)					// Obtener todos los tipos de item
+		r.Get("/{itemTypeID}", GetItemType)			// Obtener un tipo de item
+
+		/*
 		r.Post("/createItemType", createItemType) 	// Crear un tipo de item
 		r.Put("/deleteItemType", DeleteItemType)	// Eliminar un tipo de item
 		r.Put("/updateItemType", UpdateItemType)	// Actualizar un tipo de item
 		r.Get("/getItemTypes", GetItemTypes)		// Obtener todos los tipos de item
 		r.Get("/getItemType", GetItemType)			// Obtener un tipo de item
+		*/
 
+		r.Post("/", CreateItem)			// Crear un item
+		r.Delete("/{itemID}", DeleteItem)	// Eliminar un item
+		r.Patch("/{itemID}", UpdateItem)	// Actualizar un item
+		r.Get("/", GetItems)				// Obtener todos los items
+		r.Get("/{itemID}", GetItem)		// Obtener un item
+		
+		/*
 		r.Post("/createItem", CreateItem)	// Crear un item
 		r.Put("/deleteItem", DeleteItem)	// Eliminar un item
 		r.Put("/updateItem", UpdateItem)	// Actualizar un item
 		r.Get("/getItems", GetItems)		// Obtener todos los items
 		r.Get("/getItem", GetItem)			// Obtener un item
+		*/
 
-		//TODO manejo de prestamos
+		// TODO: Agregar rutas para loan y loanItem
+		r.Post("/", CreateLoan)				// Crear un prestamo
+		r.Delete("/{loanID}", DeleteLoan)	// Eliminar un prestamo
+		r.Patch("/{loanID}", UpdateLoan)	// Actualizar un prestamo
+		r.Get("/", GetLoans)				// Obtener todos los prestamos
+		r.Get("/{loanID}", GetLoan)			// Obtener un prestamo
+
+		r.Post("/", CreateLoanItem) 		   // Crear un item de prestamo
+		r.Delete("/{loanItemID}", DeleteLoanItem) // Eliminar un item de prestamo
+		r.Patch("/{loanItemID}", UpdateLoanItem) // Actualizar un item de prestamo
+		r.Get("/", GetLoanItems)			   // Obtener todos los items de prestamo
+		r.Get("/{loanItemID}", GetLoanItem)	   // Obtener un item de prestamo
+
 	})
 }
 
@@ -197,6 +225,7 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
+	print(id) // Debug: DELETE LATER
 }
 
 // CreateItemType
@@ -282,3 +311,88 @@ Obtiene un item de la base de datos
 func GetItem(w http.ResponseWriter, r *http.Request) {
 	//TODO implementar
 }
+
+// CreateLoan
+/*
+Recibe los datos de un nuevo prestamo,
+verifica que los campos sean correctos
+y los guarda en la base de datos
+*/
+func CreateLoan(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// DeleteLoan
+/*
+Recibe el id de un prestamo y lo elimina de la base de datos
+*/
+func DeleteLoan(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// UpdateLoan
+/*
+Recibe los datos de un prestamo y los actualiza en la base de datos
+*/
+func UpdateLoan(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// GetLoans
+/*
+Obtiene todos los prestamos de la base de datos
+*/
+func GetLoans(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// GetLoan
+/*
+Obtiene un prestamo de la base de datos
+*/
+func GetLoan(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// CreateLoanItem
+/*
+Recibe los datos de un nuevo item de prestamo,
+verifica que los campos sean correctos
+y los guarda en la base de datos
+*/
+func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// DeleteLoanItem
+/*
+Recibe el id de un item de prestamo y lo elimina de la base de datos
+*/
+func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// UpdateLoanItem
+/*
+Recibe los datos de un item de prestamo y los actualiza en la base de datos
+*/
+func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// GetLoanItems
+/*
+Obtiene todos los items de prestamo de la base de datos
+*/
+func GetLoanItems(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+
+// GetLoanItem
+/*
+Obtiene un item de prestamo de la base de datos
+*/
+func GetLoanItem(w http.ResponseWriter, r *http.Request) {
+	//TODO implementar
+}
+

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"strings"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
