@@ -97,7 +97,7 @@ func DBSaveUser(user models.User) error {
 Devuelve una lista con los tipos de items que hay en la base de datos.
 */
 func DBShowItemTypes() ([]byte, error) {
-	var itemTypes []data.ItemType
+	var itemTypes []models.ItemType
 
 	db := connect(false)
 	query := "SELECT * FROM typeitem"
@@ -107,7 +107,7 @@ func DBShowItemTypes() ([]byte, error) {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var itemType data.ItemType
+		var itemType models.ItemType
 		err := rows.Scan(&itemType.ID, &itemType.Name, &itemType.IsGeneric)
 		if err != nil {
 			log.Fatal(err)
@@ -129,7 +129,7 @@ func DBShowItemTypes() ([]byte, error) {
 Devuelve una lista con los items que hay en la base de datos en formato JSON.
 */
 func DBShowItems() ([]byte, error) {
-	var items []data.Item
+	var items []models.Item
 
 	db := connect(false)
 	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
@@ -141,7 +141,7 @@ func DBShowItems() ([]byte, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var item data.Item
+		var item models.Item
 		err := rows.Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
 		if err != nil {
 			return nil, err
@@ -162,7 +162,7 @@ func DBShowItems() ([]byte, error) {
 /*
 Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveItemType(itemType data.ItemType) error {
+func DBSaveItemType(itemType models.ItemType) error {
 	db := connect(false)
 	query := "INSERT INTO typeitem (name, isgeneric) VALUES ($1, $2)"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric)
@@ -176,7 +176,7 @@ func DBSaveItemType(itemType data.ItemType) error {
 /*
 Guarda un item en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveItem(item data.Item) error {
+func DBSaveItem(item models.Item) error {
 
 	db := connect(false)
 	query := "INSERT INTO item (typeid, code, price) VALUES ($1, $2, $3)"
@@ -191,7 +191,7 @@ func DBSaveItem(item data.Item) error {
 /*
 Actualiza un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBUpdateItemType(itemType data.ItemType) error {
+func DBUpdateItemType(itemType models.ItemType) error {
 	db := connect(false)
 	query := "UPDATE typeitem SET name = $1, isgeneric = $2 WHERE id = $3"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric, itemType.ID)
@@ -205,7 +205,7 @@ func DBUpdateItemType(itemType data.ItemType) error {
 /*
 Actualiza un item en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBUpdateItem(item data.Item) error {
+func DBUpdateItem(item models.Item) error {
 	db := connect(false)
 	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
 	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)
