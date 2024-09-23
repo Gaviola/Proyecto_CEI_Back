@@ -13,6 +13,10 @@ import (
 	"time"
 )
 
+// LoginRoutes
+/*
+LoginRoutes define las rutas para el login de usuarios.
+*/
 func LoginRoutes(r chi.Router) {
 	r.Route("/login", func(r chi.Router) {
 		r.Post("/user", LoginUser)     // Login con email y contraseña
@@ -20,6 +24,10 @@ func LoginRoutes(r chi.Router) {
 	})
 }
 
+// LoginUser
+/*
+LoginUser permite a un usuario autenticarse con email y contraseña.
+*/
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	var creds models.Credentials
 	var user models.User
@@ -82,6 +90,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// LoginGoogle
+/*
+LoginGoogle permite a un usuario autenticarse con Google.
+*/
 func LoginGoogle(w http.ResponseWriter, r *http.Request) {
 	// Routes for the application
 	http.HandleFunc("/", services.HandleMain)

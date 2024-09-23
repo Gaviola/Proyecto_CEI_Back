@@ -5,8 +5,10 @@ import (
 	"net/http"
 )
 
-// Middleware para verificar el rol de autorización en las rutas
-
+// AdminMiddleware
+/*
+Middleware para verificar el rol de autorización en las rutas.
+*/
 func AdminMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Verificar el rol del usuario del token JWT

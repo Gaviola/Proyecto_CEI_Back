@@ -7,9 +7,10 @@ import (
 	"os"
 	"strings"
 )
-
-// Middleware para verificar el token de autorización en las rutas
-
+// AuthMiddleware
+/*
+Middleware para verificar el token de autorización en las rutas.
+*/
 func AuthMiddleware(next http.Handler) http.Handler {
 	var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

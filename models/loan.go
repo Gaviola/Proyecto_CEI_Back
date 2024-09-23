@@ -1,5 +1,9 @@
 package models
 
+// Loan
+/*
+Estructura de datos de un préstamo.
+*/
 type Loan struct {
 	ID            int
 	Status        string

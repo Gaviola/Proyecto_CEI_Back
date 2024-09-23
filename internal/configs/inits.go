@@ -6,8 +6,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+// InitializeViper
 /*
-InitializeViper Function initializes viper to read config.yml file and environment variables in the application.
+InitializeViper inicializa viper para leer el archivo config.yml 
+y las variables de entorno en la aplicación.
 */
 func InitializeViper() {
 	// Set the file name of the configurations file

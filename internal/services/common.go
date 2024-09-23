@@ -12,9 +12,9 @@ import (
 )
 
 	
-
+// HandleMain
 /*
-HandleMain Function renders the index page when the application index route is called
+Renderiza la página de inicio cuando se llama a la ruta de índice de la aplicación.
 */
 func HandleMain(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -23,8 +23,9 @@ func HandleMain(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(pages.IndexPage))
 }
 
+// HandleLogin
 /*
-HandleLogin Function
+HandleLogin maneja la redirección a la página de inicio de sesión de Google.
 */
 func HandleLogin(w http.ResponseWriter, r *http.Request, oauthConf *oauth2.Config, oauthStateString string) {
 	URL, err := url.Parse(oauthConf.Endpoint.AuthURL)

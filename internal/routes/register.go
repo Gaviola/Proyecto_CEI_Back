@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+// RegisterRoutes
+/*
+RegisterRoutes define las rutas para el registro de usuarios.
+*/
 func RegisterRoutes(r chi.Router) {
 	r.Route("/register", func(r chi.Router) {
 		r.Post("/user", LoginUser) // registro manual

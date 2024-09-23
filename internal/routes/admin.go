@@ -10,6 +10,10 @@ import (
 	"strconv"
 )
 
+// AdminRoutes
+/*
+Agrega las rutas de la API que requieren autenticación y permisos de administrador.
+*/
 func AdminRoutes(r chi.Router) {
 	r.Route("/admin", func(r chi.Router) {
 		r.Use(middlewares.AuthMiddleware)  // middleware de verificacion de token

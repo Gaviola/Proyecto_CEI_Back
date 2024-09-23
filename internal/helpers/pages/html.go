@@ -1,7 +1,8 @@
 package pages
 
+// IndexPage
 /*
-IndexPage renders the html content for the index page.
+IndexPage renderiza el contenido html para la página de inicio.
 */
 const IndexPage = `
 <html>

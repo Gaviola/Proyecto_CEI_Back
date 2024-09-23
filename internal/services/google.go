@@ -23,8 +23,9 @@ var (
 	oauthStateStringGl = ""
 )
 
+// InitializeOAuthGoogle
 /*
-InitializeOAuthGoogle Function
+InitializeOAuthGoogle inicializa la configuración de OAuth para Google.
 */
 func InitializeOAuthGoogle() {
 	oauthConfGl.ClientID = viper.GetString("google.clientID")
@@ -32,15 +33,17 @@ func InitializeOAuthGoogle() {
 	oauthStateStringGl = viper.GetString("oauthStateString")
 }
 
+// HandleGoogleLogin
 /*
-HandleGoogleLogin Function
+HandleGoogleLogin maneja la redirección a la página de inicio de sesión de Google.
 */
 func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
 	HandleLogin(w, r, oauthConfGl, oauthStateStringGl)
 }
 
+// CallBackFromGoogle
 /*
-CallBackFromGoogle Function
+CallBackFromGoogle maneja la respuesta de Google al inicio de sesión.
 */
 func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
 	logger.Log.Info("Callback-gl..")
