@@ -1,6 +1,6 @@
 package models
 
 type LoanItem struct {
-	loanID int
-	itemID int
+	LoanID int
+	ItemID int
 }

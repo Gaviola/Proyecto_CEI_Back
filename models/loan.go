@@ -2,13 +2,14 @@ package models
 
 type Loan struct {
 	ID            int
-	status        string
-	userID        int
-	adminID       int
-	creationDate  string
-	endingDate    string
-	returnDate    string
-	observation   string
-	price         float64
-	paymentMethod string
+	Status        string
+	UserID        int
+	AdminID       int
+	CreationDate  string
+	EndingDate    string
+	ReturnDate    string
+	Observation   string
+	Price         float64
+	PaymentMethod string
 }
+
