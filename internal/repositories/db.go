@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
@@ -115,10 +116,10 @@ Guarda un usuario en la base de datos. Devuelve un error si hay un error en la b
 */
 func DBSaveUser(user models.User) error {
 	db := connect(false)
-	query := "INSERT INTO users (name, lastname, studentID, email, phone, role, DNI, creatorid, school, isverified, hash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
+	query := "INSERT INTO users (name, lastname, studentid, email, phone, role, DNI, creatorid, school, isverified, hash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
 	_, err := db.Exec(query, user.Name, user.Lastname, user.StudentId, user.Email, user.Phone, user.Role, user.Dni, user.CreatorId, user.School, user.IsVerified, user.Hash)
 	if err != nil {
-
+		fmt.Println(err)
 		return err
 	}
 	return nil

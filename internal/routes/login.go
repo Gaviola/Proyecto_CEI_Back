@@ -2,15 +2,16 @@ package routes
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
-	"os"
-	"time"
 )
 
 // LoginRoutes
@@ -98,5 +99,54 @@ func LoginGoogle(w http.ResponseWriter, r *http.Request) {
 	// Routes for the application
 	http.HandleFunc("/", services.HandleMain)
 	http.HandleFunc("/login-gl", services.HandleGoogleLogin)
-	http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
+	http.HandleFunc("/callback-gl", func(w http.ResponseWriter, r *http.Request) {
+		response, err := services.CallBackFromGoogle(w, r)
+		if err != nil {
+			http.Error(w, "Error en la autenticación con Google", http.StatusInternalServerError)
+			return
+		}
+
+		// Parse the response from Google
+		var googleUser models.GoogleUser
+		err = json.Unmarshal(response, &googleUser)
+		if err != nil {
+			http.Error(w, "Error en la autenticación con Google", http.StatusInternalServerError)
+			return
+		}
+
+		// Check if the user exists in the database
+		var user models.User
+		user, err = repositories.DBGetUserByEmail(googleUser.Email)
+	
+		if err != nil {
+			http.Error(w, "Error de servidor", http.StatusInternalServerError)
+			return
+		}
+
+		// If the user does not exist, create a new user
+		if user.IsEmpty() {
+			user = models.User{
+				Name:       "",
+				Lastname:   "",
+				StudentId:  0,
+				Email:      googleUser.Email,
+				Phone:      0,
+				Role:       "user",
+				Dni:        0,
+				CreatorId:  0,
+				School:     "",
+				IsVerified: false,
+				Hash:       []byte(""), // Empty hash
+			}
+
+			err = repositories.DBSaveUser(user)
+			if err != nil {
+				http.Error(w, "Error de servidor", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			print("User exists\n")
+		}
+	})
+
 }

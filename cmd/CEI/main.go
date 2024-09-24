@@ -85,15 +85,13 @@ func main() {
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 	case 2:
-		// Routes for the application
-		http.HandleFunc("/", services.HandleMain)
-		http.HandleFunc("/login-gl", services.HandleGoogleLogin)
-		http.HandleFunc("/callback-gl", services.CallBackFromGoogle)
+		w := http.ResponseWriter(nil)
+		r, err := http.NewRequest("GET", "/", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		log.Fatal(http.ListenAndServe(":8080", nil))
-
-		fmt.Println("Servidor escuchando en http://localhost:8080")
-		logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
+		routes.LoginGoogle(w, r)
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
 
 	case 3:

@@ -45,7 +45,7 @@ func HandleGoogleLogin(w http.ResponseWriter, r *http.Request) {
 /*
 CallBackFromGoogle maneja la respuesta de Google al inicio de sesión.
 */
-func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
+func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 	logger.Log.Info("Callback-gl..")
 
 	state := r.FormValue("state")
@@ -53,7 +53,7 @@ func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
 	if state != oauthStateStringGl {
 		logger.Log.Info("invalid oauth state, expected " + oauthStateStringGl + ", got " + state + "\n")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
+		return nil, nil
 	}
 
 	code := r.FormValue("code")
@@ -72,7 +72,7 @@ func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
 		token, err := oauthConfGl.Exchange(oauth2.NoContext, code)
 		if err != nil {
 			logger.Log.Error("oauthConfGl.Exchange() failed with " + err.Error() + "\n")
-			return
+			return nil, err
 		}
 		logger.Log.Info("TOKEN>> AccessToken>> " + token.AccessToken)
 		logger.Log.Info("TOKEN>> Expiration Time>> " + token.Expiry.String())
@@ -82,7 +82,7 @@ func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			logger.Log.Error("Get: " + err.Error() + "\n")
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-			return
+			return nil, err
 		}
 		defer resp.Body.Close()
 
@@ -90,13 +90,15 @@ func CallBackFromGoogle(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			logger.Log.Error("ReadAll: " + err.Error() + "\n")
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-			return
+			return nil, err
 		}
 
 		logger.Log.Info("parseResponseBody: " + string(response) + "\n")
 
 		w.Write([]byte("Hello, I'm protected\n"))
 		w.Write([]byte(string(response)))
-		return
+		return response, nil
 	}
+
+	return nil, nil
 }

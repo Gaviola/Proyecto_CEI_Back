@@ -25,3 +25,206 @@
 {"level":"info","time":"2024-08-28T16:46:33.922-0300","file":"services/google.go:75","msg":"TOKEN>> Expiration Time>> 2024-08-28 17:46:32.922567628 -0300 -03 m=+3874.501638532"}
 {"level":"info","time":"2024-08-28T16:46:33.922-0300","file":"services/google.go:76","msg":"TOKEN>> RefreshToken>> "}
 {"level":"info","time":"2024-08-28T16:46:34.225-0300","file":"services/google.go:93","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-23T20:21:21.660-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-23T20:21:21.927-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-23T20:21:23.518-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-23T20:21:23.520-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-23T20:21:31.127-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-23T20:21:31.128-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-23T20:21:31.128-0300","file":"services/google.go:60","msg":"4/0AQlEd8yS5aIEnagDlUf0D_iQG41VAezc2dL8e1KaAsifQwKbrtaQG9oh5lQjIN05thhiQA"}
+{"level":"info","time":"2024-09-23T20:21:31.670-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612x-_JUS9qM_3e2rmMnBaxncFVLScyCQKbY3ySKxCBzIUXw_RyhGO1zmnZHHr4tosYtQbnofcJaZiI61Ew3GmOYES66UxIOpFEZsGxOqFnNUJMaGdG7nQnE69dAvJZTDtbtzgkDV6GWdNmPgbdEB2iRZOoZEQ7WQ7CZPaCgYKAYESARISFQHGX2MievMvNKSn15Xzib5eBl_b2g0175"}
+{"level":"info","time":"2024-09-23T20:21:31.670-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-23 21:21:30.670367594 -0300 -03 m=+3617.481185355"}
+{"level":"info","time":"2024-09-23T20:21:31.670-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-23T20:21:31.838-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-23T20:21:32.095-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:30:36.479-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:30:46.557-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:30:46.952-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:31:03.088-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T12:31:03.088-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T12:31:18.445-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T12:31:18.445-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T12:31:18.445-0300","file":"services/google.go:60","msg":"4/0AQlEd8wmzwhhbM4bfJVNIyicmwgBUktZBW6xpMKsk_w8WX5hy1SQEnO8E3zpzO-yOIYQcA"}
+{"level":"info","time":"2024-09-24T12:31:18.890-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612whgvGcrfR46bT9IbphpXQBgk8jruJ39diK5O84DhmS4QAHtNEwxlsqIhtFA8lSWcb2aZ2xGY5yj6O0CkIClqBGMwHFttDekp2YqP73X_DpSoLsEIJhJAp03pabgtOesUoDn183C9xbXH4UBUz1QhVNn9SvENc0N3mqaCgYKAW4SARISFQHGX2MiTOg0AvZh2FLPIZvBk3z0lg0175"}
+{"level":"info","time":"2024-09-24T12:31:18.890-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 13:31:17.890863587 -0300 -03 m=+3655.443460626"}
+{"level":"info","time":"2024-09-24T12:31:18.891-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T12:31:19.033-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T12:31:19.361-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:46:04.998-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:46:05.185-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:46:08.481-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T12:46:08.482-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T12:46:16.552-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T12:46:16.552-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T12:46:16.552-0300","file":"services/google.go:60","msg":"4/0AQlEd8yEnloayaF-nPnTFGW_JsHlF3gPQclJ1txoquW1FUOhQ5Ri2Bzw6fCzY6jYflD2Tg"}
+{"level":"info","time":"2024-09-24T12:46:16.982-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612xunckaAzfGeCe3dfwvNmw26bPvBJ6RCaUqnbAiRaj3uOLBCkyH6OPpdK_xu_uajCbmuaI_O1Rn0q_JfEtH3l4Ek62hoKSBphejwBKNO6GRM2Z2erWTTvyNm8U0G-n-ZOGikAUzfcdGhkM_0iGjsfm57k2dtP5YLI9BaCgYKAXISARISFQHGX2MiDmOzD5y-8elPrFJQqZqRGg0175"}
+{"level":"info","time":"2024-09-24T12:46:16.983-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 13:46:15.982222985 -0300 -03 m=+3628.120104138"}
+{"level":"info","time":"2024-09-24T12:46:16.983-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T12:46:17.163-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T12:46:17.436-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:50:18.846-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:50:19.072-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:50:23.190-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T12:50:23.190-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T12:50:29.981-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T12:50:29.982-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T12:50:29.982-0300","file":"services/google.go:60","msg":"4/0AQlEd8wW4ub6SjPy5tWwSt9ay6QTuT-DTkm5x4d5IrYXb8sab6jthgIn_ETH1bLzzkTq-w"}
+{"level":"info","time":"2024-09-24T12:50:30.362-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612wgVZkRFwPAKR8IFtBST3Fvrw8eI-W_Yy5pgcsMPDoVO9r-rNscXBYYn80ve0AwYmIsl2g6iVbdkR7FktMc2kPHJtwfJp7Gp88QOYyoKiie2As9RJOW_XjiND9k6jUtisw7zL4fxq0KPqkW_e97yz9SrYUIuYM5iLGVaCgYKAcISARISFQHGX2MibG3NIYCWZ_zQq88metRrbw0175"}
+{"level":"info","time":"2024-09-24T12:50:30.362-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 13:50:29.362207787 -0300 -03 m=+3618.563365250"}
+{"level":"info","time":"2024-09-24T12:50:30.362-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T12:50:30.545-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T12:50:30.910-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:52:19.183-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:52:19.373-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T12:52:20.935-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T12:52:20.935-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T12:52:27.377-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T12:52:27.377-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T12:52:27.377-0300","file":"services/google.go:60","msg":"4/0AQlEd8xG22dhS8xiKPL-XHi8p_0RuKUax1NZlQLEElQf0qOp2E8jEnvf6OtrFW4UGfiX1A"}
+{"level":"info","time":"2024-09-24T12:52:28.173-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612zahbD7Q6TVrnARV5QqZrBny1xTNRaPWb-ct2gllJfV8g7WVl_TTUmy0FLMDt_9IstQ6EPFwphaR287hGRcte5Fy8gXpiiJgC8bUmUKhKYwBCw1epWN-LqHP0tF9zhM1IFHvHRpLifCPOqm79qogtLvnTU2Mv558H6kaCgYKAZYSARISFQHGX2MiQz2_Rnr_oRGFDIczAW1biw0175"}
+{"level":"info","time":"2024-09-24T12:52:28.175-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 13:52:27.173153089 -0300 -03 m=+3620.303440113"}
+{"level":"info","time":"2024-09-24T12:52:28.175-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T12:52:28.578-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T12:52:28.898-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:04:08.973-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:04:09.174-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:04:11.185-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:04:11.185-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:04:17.947-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:04:17.949-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:04:17.949-0300","file":"services/google.go:60","msg":"4/0AQlEd8wqNA8E3WnfgyHX6H-2rgkgK2zFyAwNG0kvPuL0MUKFwl5uvmCzOGtL10SMI9c4Mg"}
+{"level":"info","time":"2024-09-24T13:04:18.738-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612xxSXTuPvMfLPtdBjpq5syNKAR0_U0SGg9sAJXQhRjDIQku65eKzXacq40HxmJJRPbHDA_B8uXH-HAnTsffb4_CPP6L21KuXgdIN59T5UTSe9LPutnl6CZxjVS1bDOEI2AyE0Au4VItNyw2vBmN-JwMfKP1Pjwc-hAraCgYKAbYSARISFQHGX2MixKPILbDcVEn6q8mZjYk_MQ0175"}
+{"level":"info","time":"2024-09-24T13:04:18.738-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:04:17.737858379 -0300 -03 m=+3614.404096085"}
+{"level":"info","time":"2024-09-24T13:04:18.739-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:04:19.350-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:04:19.695-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:05:09.130-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:05:09.353-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:05:10.455-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:05:10.455-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:05:17.990-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:05:17.992-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:05:17.992-0300","file":"services/google.go:60","msg":"4/0AQlEd8wAie37IxXrefd_KK3T-cLvFcwYe_kw_zgJ0FFrF-Bx8U4HV_UrzoCMliPopeyNfg"}
+{"level":"info","time":"2024-09-24T13:05:18.395-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612wcvA47v1StJ8XeSf3RLfweSZCUVspqbb6C5uitad1U8jGvVwcbEHQc2wLNF_5Lgj_2IT8VXOHODYk3V6Wlv0c6JJblIkX132chr5zLC2PkspRNErTW2EMQ68uoqQrtdM4oV5cM99mn-MSuqUcr74YpGA36c09OiZvcaCgYKAbkSARISFQHGX2Miws6eMHAkEYYfOIjdvjns_w0175"}
+{"level":"info","time":"2024-09-24T13:05:18.395-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:05:17.394917996 -0300 -03 m=+3614.608357043"}
+{"level":"info","time":"2024-09-24T13:05:18.395-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:05:18.542-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:05:18.861-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:06:12.751-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:06:12.985-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:06:14.445-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:06:14.446-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:06:19.874-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:06:19.874-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:06:19.874-0300","file":"services/google.go:60","msg":"4/0AQlEd8x5g0GVPzAwiGF6Evk2RDMAXh7xbXhwL6UaOuH56eJNY190gFAz4o1Q7NYOs19rzg"}
+{"level":"info","time":"2024-09-24T13:06:20.244-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612wvRVcV1obfwAIMzX7yjq06vZ1jGieaLOXUVYRk6Mg3hscZha57emGtuZJ7WL9mFrvkn1404NEwoc90usr8TWcmgGkqpJiEeUn2b77PUXzknUSJODK_C7Jw87-cOBKia5M0_RTpUcDWi69e1wzwbhWVlhaN037IYH8HaCgYKAd4SARISFQHGX2MiNO4Km0DbN3-3HmjQOqfC7A0175"}
+{"level":"info","time":"2024-09-24T13:06:20.245-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:06:19.244657021 -0300 -03 m=+3611.746552702"}
+{"level":"info","time":"2024-09-24T13:06:20.245-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:06:20.397-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:06:20.694-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:13:12.283-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:13:12.503-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:13:18.284-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:13:18.284-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:13:24.820-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:13:24.821-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:13:24.822-0300","file":"services/google.go:60","msg":"4/0AQlEd8waAjxvULVZO6hz4N7Ck0Fq6zOmSBHRSvCDZB6rT3bw58dZF-WA61RNQCASVEh3pw"}
+{"level":"info","time":"2024-09-24T13:13:25.207-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612yU2LMgG0zeLun6hU1rkB6VD9LMUaHwdHAQ-bMaUMSOItZHJzDA2CI4N6yzgp-cVXDUC-dQCn41DZuTKb4BWlawODm_y9Rj_TzapgmUAk7Sd5FY3mxQSWwxMQS8BmMrbf36ZolLfXTIjKeWOz2Sklu6audEdhnBwxPhaCgYKAYwSARISFQHGX2MiFGINc6t1H2GKrZoFP4Pr_w0175"}
+{"level":"info","time":"2024-09-24T13:13:25.208-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:13:24.207791481 -0300 -03 m=+3620.072627379"}
+{"level":"info","time":"2024-09-24T13:13:25.208-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:13:25.369-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:13:25.697-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:14:22.466-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:14:22.467-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:14:22.467-0300","file":"services/google.go:60","msg":"4/0AQlEd8waAjxvULVZO6hz4N7Ck0Fq6zOmSBHRSvCDZB6rT3bw58dZF-WA61RNQCASVEh3pw"}
+{"level":"error","time":"2024-09-24T13:14:22.689-0300","file":"services/google.go:74","msg":"oauthConfGl.Exchange() failed with oauth2: \"invalid_grant\" \"Bad Request\"\n"}
+{"level":"info","time":"2024-09-24T13:14:22.860-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:14:28.532-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:14:28.669-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:14:30.991-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:14:30.992-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:14:37.633-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:14:37.633-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:14:37.633-0300","file":"services/google.go:60","msg":"4/0AQlEd8zUNe9K0APvX3r8YbCBbQpMseR9P212DzWklOqCdF1oPdYQ_1JbnV-5OdtkhOivsg"}
+{"level":"info","time":"2024-09-24T13:14:37.838-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612xsnplgc_W7wzDj2e-KFSbWhA0ErOGi9lzkdP-_XLHVILO1tf0W9opBf5zUQjSVX4b0cGBgeBnjsoWNg1KIYJKTEdVw57pYLmC3tFJ24M8m3zbuQf7l8yCcl7lnwvAwJZyNgn1EN62usOW7NYHCFZ2cVg5Z0mRHd06JaCgYKAQUSARISFQHGX2Mi3TS6XdyqjPn_v9Jokh_6Zw0175"}
+{"level":"info","time":"2024-09-24T13:14:37.838-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:14:36.838459178 -0300 -03 m=+3621.835751310"}
+{"level":"info","time":"2024-09-24T13:14:37.838-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:14:38.014-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:14:38.341-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:27:30.157-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:27:30.372-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:27:32.692-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:27:32.692-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:27:40.153-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:27:40.153-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:27:40.153-0300","file":"services/google.go:60","msg":"4/0AQlEd8xmJRYvfwXCRdVo0O49VhQkPoLmdRIcu4ZqMvNEyYX3xJ0D4DwV64dEvLoY3-B8xQ"}
+{"level":"info","time":"2024-09-24T13:27:40.545-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612w9_1dNXgsnB64I_CcnZ662JxUjOhBmXdDJkH-sgOUTn-fwmJgDYzI86pHjA_5MNDKV13MzqXdUmc-A-f7PhOqs05fpB62Fc7_bXjiwd1E7a7rUu6Mzm-7zFHg6Aj6FQcLqcXhGGCtvRXVxSYAHFy25QDGY2fCyFCEnaCgYKAboSARISFQHGX2MiMfjCvKq93EgiUKoYk4m0rg0175"}
+{"level":"info","time":"2024-09-24T13:27:40.545-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:27:39.545307859 -0300 -03 m=+3614.183593683"}
+{"level":"info","time":"2024-09-24T13:27:40.545-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:27:40.736-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:27:41.022-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:37:38.250-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:37:38.250-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:37:38.251-0300","file":"services/google.go:60","msg":"4/0AQlEd8xmJRYvfwXCRdVo0O49VhQkPoLmdRIcu4ZqMvNEyYX3xJ0D4DwV64dEvLoY3-B8xQ"}
+{"level":"error","time":"2024-09-24T13:37:38.493-0300","file":"services/google.go:74","msg":"oauthConfGl.Exchange() failed with oauth2: \"invalid_grant\" \"Bad Request\"\n"}
+{"level":"info","time":"2024-09-24T13:37:38.655-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:37:41.337-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:37:41.474-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:37:43.259-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:37:43.260-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:37:51.342-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:37:51.342-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:37:51.342-0300","file":"services/google.go:60","msg":"4/0AQlEd8yvkwA6r1H49i7CxsC4fFw4UBxXkm2ZIUWaMQq6XqP0SXwKw2WdVRe4aQ1fLYwjBg"}
+{"level":"info","time":"2024-09-24T13:37:51.553-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612y3VojSuB-4lrSIic6tV0EBMK8gxLKigpKYIEIVZ4g_zJB_rAQ4gyCyG4wd7zWv3q06_x-OLi76CdHN2oFZI0rFg0laoU5ooaimRL9NVndSBYPQb-H1d6X_-T8HdjE3rj4QtqPB3YkebMRFA3tF0Tt3QWSMsCqgOsOXaCgYKAc0SARISFQHGX2MiB7JAVukIvzmVbCOsIB0cuQ0175"}
+{"level":"info","time":"2024-09-24T13:37:51.553-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:37:50.553571273 -0300 -03 m=+3618.624569873"}
+{"level":"info","time":"2024-09-24T13:37:51.554-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:37:51.817-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:37:52.115-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:39:28.692-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:39:28.904-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:39:29.866-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:39:29.866-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:39:38.127-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:39:38.127-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:39:38.127-0300","file":"services/google.go:60","msg":"4/0AQlEd8zB0G2H5_7RbmHnOpv28KRWw_K1ajs0yWZT34rPtzG7cxvbAyAW2rd2i7TngOaUGw"}
+{"level":"info","time":"2024-09-24T13:39:38.574-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612zL_avcRmWUvEwKRFctCi_jhanW2z9N5lV6CzdIWBJtfzwPVDKfWFeeRu8tcylJ5m5psFQD_YaW-N1T0Ol6CoKb0OfQGUsCxEyvZVAoyMiPMgkTalFkxLTPVS4p5F6t2DhmuHh6xSmh7OFfw_AwTZR6YbkelLMtHj3haCgYKAesSARISFQHGX2Mi3aD9yxDjUYY76wcCKmh9MA0175"}
+{"level":"info","time":"2024-09-24T13:39:38.575-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:39:37.574657823 -0300 -03 m=+3612.027628216"}
+{"level":"info","time":"2024-09-24T13:39:38.575-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:39:38.747-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:39:39.024-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:40:14.139-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:40:14.313-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:40:15.199-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:40:15.200-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:40:24.263-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:40:24.264-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:40:24.264-0300","file":"services/google.go:60","msg":"4/0AQlEd8ysWraWHQqsEXYdNsT-dxj6HGbvPKDzszR_t6-TfDy-wWYiCO0DL2E67GRP5z5Mkw"}
+{"level":"info","time":"2024-09-24T13:40:24.712-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612zYMvtiEcXpMYVff-1NP7BOTEKMrN8kTBQfVKi1R3cif4idyk6oTi0Sv_GRUyaaYDM7Wu7ZdjoGY5NDQHLgSr9vz0nEp_1wqyCboJp8B9kwdjmws37SWx8cRqnA_7EDHp39dE_SdTgcwX39J9oCERfhZltgTvJ54jn2aCgYKAQMSARISFQHGX2MiyFJldqYbnXtWzBzyPcylgA0175"}
+{"level":"info","time":"2024-09-24T13:40:24.713-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:40:23.711787312 -0300 -03 m=+3615.179564918"}
+{"level":"info","time":"2024-09-24T13:40:24.715-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:40:24.856-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:40:25.142-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:50:29.018-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:50:29.296-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:50:30.509-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:50:30.510-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:50:35.800-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:50:35.800-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:50:35.800-0300","file":"services/google.go:60","msg":"4/0AQlEd8woqMoAns0hXbDGTQ5CzOmWGdreyHyTYAMme8eHofYBfVVQ2oUmH-CVaGfP1y7dvQ"}
+{"level":"info","time":"2024-09-24T13:50:36.154-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612ztQTWV2v3OpkxaDS9gFjB_-YgX9kXgYT9CbMjm34zEnf7uJk9R2GUv50L2n2utGPtGyHhBPKJiIOfwW2VxBsjwGydKsFMQm1W-h27E4_wbA8CE5tKVYCxd-fNSphQtpbbUsD2ChbAeEhNpLQ2IRBDysZB8fG4m9XmtaCgYKAawSARISFQHGX2Mi5Hql53aC9cYq3S-MTGB3qw0175"}
+{"level":"info","time":"2024-09-24T13:50:36.154-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:50:35.154414971 -0300 -03 m=+3612.143877770"}
+{"level":"info","time":"2024-09-24T13:50:36.154-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:50:36.359-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:50:36.644-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:52:40.186-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:52:40.372-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-09-24T13:52:42.883-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-09-24T13:52:42.883-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-09-24T13:52:57.397-0300","file":"services/google.go:49","msg":"Callback-gl.."}
+{"level":"info","time":"2024-09-24T13:52:57.398-0300","file":"services/google.go:52","msg":""}
+{"level":"info","time":"2024-09-24T13:52:57.399-0300","file":"services/google.go:60","msg":"4/0AQlEd8z3maQPZ34QuJuC5jStQKCWJfHEUpsrGRDMzaSnDyTraBmrXPysTlByglVwMVsRKQ"}
+{"level":"info","time":"2024-09-24T13:52:58.035-0300","file":"services/google.go:77","msg":"TOKEN>> AccessToken>> ya29.a0AcM612xqYHGuuv3jIz_aqmOsLhnX_MAvOo05pLs7MfIIb-VOGfoeqW64w0udkOlB7zVeSqkGgnkclC7_GhbeCGYQ2dFuHxcrlFqOtfNqdt2a1ZMRIBzuKKvFYZhzPq3t85Er4CLJw6hP3N_N0nDzH96jKUWGMMAqqSrhReczaCgYKAdISARISFQHGX2Mip-oCENzGFhkv0Ay0qEZB2Q0175"}
+{"level":"info","time":"2024-09-24T13:52:58.036-0300","file":"services/google.go:78","msg":"TOKEN>> Expiration Time>> 2024-09-24 14:52:57.035229777 -0300 -03 m=+3624.933646815"}
+{"level":"info","time":"2024-09-24T13:52:58.036-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
+{"level":"info","time":"2024-09-24T13:52:58.211-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
+{"level":"info","time":"2024-09-24T13:52:58.546-0300","file":"services/common.go:22","msg":"Index page.."}

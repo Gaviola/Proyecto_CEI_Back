@@ -7,17 +7,17 @@ import "reflect"
 Estructura de datos que representa a un usuario.
 */
 type User struct {
-	ID         int
-	Name       string
-	Lastname   string
-	StudentId  int //legajo
-	Email      string
-	Phone      int
-	Role       string
-	Dni        int
-	CreatorId  int
-	School     string
-	IsVerified bool
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	Lastname   string `json:"lastname"`
+	StudentId  int    //legajo  `json:"student_id"`
+	Email      string `json:"email"`
+	Phone      int    `json:"phone"`
+	Role       string `json:"role"`
+	Dni        int    `json:"dni"`
+	CreatorId  int    `json:"creator_id"`
+	School     string `json:"school"`
+	IsVerified bool   `json:"is_verified"`
 	Hash       []byte
 }
 
