@@ -16,64 +16,53 @@ Agrega las rutas de la API que requieren autenticación y permisos de administra
 */
 func AdminRoutes(r chi.Router) {
 	r.Route("/admin", func(r chi.Router) {
-		r.Use(middlewares.AuthMiddleware)  // middleware de verificacion de token
-		r.Use(middlewares.AdminMiddleware) // middleware de verificacion de admin
+		r.Use(middlewares.AuthMiddleware)  // Middleware de verificación de token
+		r.Use(middlewares.AdminMiddleware) // Middleware de verificación de admin
 
-		r.Post("/", CreateUser)           // Crear un usuario
-		r.Delete("/{userID}", DeleteUser) // Eliminar un usuario
-		r.Patch("/{userID}", UpdateUser)  // Actualizar un usuario
-		r.Get("/", GetUsers)              // Obtener todos los usuarios
-		r.Get("/{userID}", GetUser)       // Obtener un usuario
-		r.Put("/{userID}", VerifyUser)    // Verificar un usuario
+		// Rutas para usuarios
+		r.Route("/users", func(r chi.Router) {
+			r.Post("/", CreateUser)           // Crear un usuario
+			r.Delete("/{userID}", DeleteUser) // Eliminar un usuario
+			r.Patch("/{userID}", UpdateUser)  // Actualizar un usuario
+			r.Get("/", GetUsers)              // Obtener todos los usuarios
+			r.Get("/{userID}", GetUser)       // Obtener un usuario
+			r.Put("/{userID}", VerifyUser)    // Verificar un usuario
+		})
 
-		r.Post("/createUser", CreateUser) // Crear un usuario
-		r.Put("/deleteUser", DeleteUser)  // Eliminar un usuario
-		r.Put("/updateUser", UpdateUser)  // Actualizar un usuario
-		r.Get("/getUsers", GetUsers)      // Obtener todos los usuarios
-		r.Get("/getUser", GetUser)        // Obtener un usuario
-		r.Put("/verifyUser", VerifyUser)  // Verificar un usuario
+		// Rutas para tipos de ítems
+		r.Route("/item-types", func(r chi.Router) {
+			r.Delete("/{itemTypeID}", DeleteItemType) // Eliminar un tipo de ítem
+			r.Patch("/{itemTypeID}", UpdateItemType)  // Actualizar un tipo de ítem
+			r.Get("/", GetItemTypes)                  // Obtener todos los tipos de ítems
+			r.Get("/{itemTypeID}", GetItemType)       // Obtener un tipo de ítem
+		})
 
-		r.Post("/", createItemType)               // Crear un tipo de item
-		r.Delete("/{itemTypeID}", DeleteItemType) // Eliminar un tipo de item
-		r.Patch("/{itemTypeID}", UpdateItemType)  // Actualizar un tipo de item
-		r.Get("/", GetItemTypes)                  // Obtener todos los tipos de item
-		r.Get("/{itemTypeID}", GetItemType)       // Obtener un tipo de item
+		// Rutas para ítems
+		r.Route("/items", func(r chi.Router) {
+			r.Post("/", CreateItem)           // Crear un ítem
+			r.Delete("/{itemID}", DeleteItem) // Eliminar un ítem
+			r.Patch("/{itemID}", UpdateItem)  // Actualizar un ítem
+			r.Get("/", GetItems)              // Obtener todos los ítems
+			r.Get("/{itemID}", GetItem)       // Obtener un ítem
+		})
 
-		/*
-			r.Post("/createItemType", createItemType) 	// Crear un tipo de item
-			r.Put("/deleteItemType", DeleteItemType)	// Eliminar un tipo de item
-			r.Put("/updateItemType", UpdateItemType)	// Actualizar un tipo de item
-			r.Get("/getItemTypes", GetItemTypes)		// Obtener todos los tipos de item
-			r.Get("/getItemType", GetItemType)			// Obtener un tipo de item
-		*/
+		// Rutas para préstamos
+		r.Route("/loans", func(r chi.Router) {
+			r.Post("/", CreateLoan)           // Crear un préstamo
+			r.Delete("/{loanID}", DeleteLoan) // Eliminar un préstamo
+			r.Patch("/{loanID}", UpdateLoan)  // Actualizar un préstamo
+			r.Get("/", GetLoans)              // Obtener todos los préstamos
+			r.Get("/{loanID}", GetLoan)       // Obtener un préstamo
+		})
 
-		r.Post("/", CreateItem)           // Crear un item
-		r.Delete("/{itemID}", DeleteItem) // Eliminar un item
-		r.Patch("/{itemID}", UpdateItem)  // Actualizar un item
-		r.Get("/", GetItems)              // Obtener todos los items
-		r.Get("/{itemID}", GetItem)       // Obtener un item
-
-		/*
-			r.Post("/createItem", CreateItem)	// Crear un item
-			r.Put("/deleteItem", DeleteItem)	// Eliminar un item
-			r.Put("/updateItem", UpdateItem)	// Actualizar un item
-			r.Get("/getItems", GetItems)		// Obtener todos los items
-			r.Get("/getItem", GetItem)			// Obtener un item
-		*/
-
-		// TODO: Agregar rutas para loan y loanItem
-		r.Post("/", CreateLoan)           // Crear un prestamo
-		r.Delete("/{loanID}", DeleteLoan) // Eliminar un prestamo
-		r.Patch("/{loanID}", UpdateLoan)  // Actualizar un prestamo
-		r.Get("/", GetLoans)              // Obtener todos los prestamos
-		r.Get("/{loanID}", GetLoan)       // Obtener un prestamo
-
-		r.Post("/", CreateLoanItem)               // Crear un item de prestamo
-		r.Delete("/{loanItemID}", DeleteLoanItem) // Eliminar un item de prestamo
-		r.Patch("/{loanItemID}", UpdateLoanItem)  // Actualizar un item de prestamo
-		r.Get("/", GetLoanItems)                  // Obtener todos los items de prestamo
-		r.Get("/{loanItemID}", GetLoanItem)       // Obtener un item de prestamo
-
+		// Rutas para items de préstamo
+		r.Route("/loan-items", func(r chi.Router) {
+			r.Post("/", CreateLoanItem)               // Crear un ítem de préstamo
+			r.Delete("/{loanItemID}", DeleteLoanItem) // Eliminar un ítem de préstamo
+			r.Patch("/{loanItemID}", UpdateLoanItem)  // Actualizar un ítem de préstamo
+			r.Get("/", GetLoanItems)                  // Obtener todos los ítems de préstamo
+			r.Get("/{loanItemID}", GetLoanItem)       // Obtener un ítem de préstamo
+		})
 	})
 }
 
