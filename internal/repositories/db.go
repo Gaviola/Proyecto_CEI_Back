@@ -29,7 +29,6 @@ func connect(isFacu bool) *sql.DB {
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
-		defer db.Close()
 	}
 	err = db.Ping()
 	if err != nil {
@@ -49,6 +48,13 @@ Devuelve un usuario vacio si el usuario no existe o si hay un error en la base d
 func DBExistUser(passHash []byte, user string) (models.User, error) {
 	findUser := models.User{}
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM users WHERE email = $1 AND hash = $2"
 	result := db.QueryRow(query, user, passHash).Scan(&findUser.ID, &findUser.Name, &findUser.Lastname, &findUser.StudentId, &findUser.Email, &findUser.Phone, &findUser.Role, &findUser.Dni, &findUser.CreatorId, &findUser.School, &findUser.IsVerified, &findUser.Hash)
 
@@ -65,6 +71,13 @@ existe o si hay un error en la base de datos.
 */
 func DBCheckUser(mail string) (bool, error) {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM users WHERE email = $1"
 	result := db.QueryRow(query, mail)
 	if result != nil {
@@ -81,6 +94,13 @@ Devuelve un usuario vacio si el usuario no existe o si hay un error en la base d
 func DBGetUserByEmail(email string) (models.User, error) {
 	var user models.User
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM users WHERE email = $1"
 	err := db.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -99,6 +119,13 @@ Busca un usuario en la base de datos segun el id. Devuelve el usuario correspond
 func DBGetUserByID(id int) (models.User, error) {
 	var user models.User
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM users WHERE id = $1"
 	err := db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Lastname, &user.StudentId, &user.Email, &user.Phone, &user.Role, &user.Dni, &user.CreatorId, &user.School, &user.IsVerified, &user.Hash)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -116,6 +143,13 @@ Guarda un usuario en la base de datos. Devuelve un error si hay un error en la b
 */
 func DBSaveUser(user models.User) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "INSERT INTO users (name, lastname, studentid, email, phone, role, DNI, creatorid, school, isverified, hash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
 	_, err := db.Exec(query, user.Name, user.Lastname, user.StudentId, user.Email, user.Phone, user.Role, user.Dni, user.CreatorId, user.School, user.IsVerified, user.Hash)
 	if err != nil {
@@ -131,6 +165,13 @@ Elimina un usuario de la base de datos segun el id. Devuelve un error si hay un 
 */
 func DBDeleteUser(id int) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "DELETE FROM users WHERE id = $1"
 	_, err := db.Exec(query, id)
 	if err != nil {
@@ -146,6 +187,13 @@ Devuelve una lista con todos los usuarios que hay en la base de datos.
 func DBGetAllUsers() ([]models.User, error) {
 	var users []models.User
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM users"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -163,6 +211,27 @@ func DBGetAllUsers() ([]models.User, error) {
 	return users, nil
 }
 
+// DBVerifyUser
+/*
+Verifica un usuario en la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
+*/
+func DBVerifyUser(id int) error {
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
+	query := "UPDATE users SET isverified = true WHERE id = $1"
+	_, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // DBShowItemTypes
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
@@ -171,6 +240,13 @@ func DBShowItemTypes() ([]byte, error) {
 	var itemTypes []models.ItemType
 
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM typeitem"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -203,6 +279,13 @@ func DBShowItems() ([]byte, error) {
 	var items []models.Item
 
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
 
 	rows, err := db.Query(query)
@@ -235,6 +318,13 @@ Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la 
 */
 func DBSaveItemType(itemType models.ItemType) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "INSERT INTO typeitem (name, isgeneric) VALUES ($1, $2)"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric)
 	if err != nil {
@@ -250,6 +340,13 @@ Guarda un item en la base de datos. Devuelve un error si hay un error en la base
 func DBSaveItem(item models.Item) error {
 
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "INSERT INTO item (typeid, code, price) VALUES ($1, $2, $3)"
 	_, err := db.Exec(query, item.ItemType, item.Code, item.Price)
 	if err != nil {
@@ -264,6 +361,13 @@ Actualiza un itemtype en la base de datos. Devuelve un error si hay un error en 
 */
 func DBUpdateItemType(itemType models.ItemType) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "UPDATE typeitem SET name = $1, isgeneric = $2 WHERE id = $3"
 	_, err := db.Exec(query, itemType.Name, itemType.IsGeneric, itemType.ID)
 	if err != nil {
@@ -278,6 +382,13 @@ Actualiza un item en la base de datos. Devuelve un error si hay un error en la b
 */
 func DBUpdateItem(item models.Item) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
 	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)
 	if err != nil {
@@ -294,6 +405,13 @@ func DBShowLoans() ([]byte, error) {
 	var loans []models.Loan
 
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM loan"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -325,6 +443,13 @@ Guarda un prestamo en la base de datos. Devuelve un error si hay un error en la 
 */
 func DBSaveLoan(loan models.Loan) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "INSERT INTO loan (status, userid, adminid, creationdate, endingdate, returndate, observation, price, paymentmethod) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
 	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod)
 	if err != nil {
@@ -339,6 +464,13 @@ Actualiza un prestamo en la base de datos. Devuelve un error si hay un error en 
 */
 func DBUpdateLoan(loan models.Loan) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "UPDATE loan SET status = $1, userid = $2, adminid = $3, creationdate = $4, endingdate = $5, returndate = $6, observation = $7, price = $8, paymentmethod = $9 WHERE id = $10"
 	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod, loan.ID)
 	if err != nil {
@@ -355,6 +487,13 @@ func DBShowLoanItems(loanID int) ([]byte, error) {
 	var loanItems []models.LoanItem
 
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "SELECT * FROM loanitem WHERE loanid = $1"
 	rows, err := db.Query(query, loanID)
 	if err != nil {
@@ -386,6 +525,13 @@ Guarda un item de un prestamo en la base de datos. Devuelve un error si hay un e
 */
 func DBSaveLoanItem(loanItem models.LoanItem) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "INSERT INTO loanitem (loanid, itemid) VALUES ($1, $2)"
 	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID)
 	if err != nil {
@@ -400,6 +546,13 @@ Actualiza un item de un prestamo en la base de datos. Devuelve un error si hay u
 */
 func DBUpdateLoanItem(loanItem models.LoanItem) error {
 	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
 	query := "UPDATE loanitem SET loanid = $1, itemid = $2 WHERE loanid = $3 AND itemid = $4"
 	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID, loanItem.LoanID, loanItem.ItemID)
 	if err != nil {
@@ -407,6 +560,3 @@ func DBUpdateLoanItem(loanItem models.LoanItem) error {
 	}
 	return nil
 }
-
-
-
