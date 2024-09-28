@@ -437,6 +437,33 @@ func DBShowLoans() ([]byte, error) {
 	return jsonData, nil
 }
 
+// DBGetLoanByID
+/*
+Obtiene un prestamo de la base de datos segun el id. 
+Devuelve el prestamo correspondiente si el prestamo existe.
+Devuelve un prestamo vacio si el prestamo no existe o si hay un error en la base de datos.
+*/
+func DBGetLoanByID(id int) (models.Loan, error) {
+	var loan models.Loan
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "SELECT * FROM loan WHERE id = $1"
+	err := db.QueryRow(query, id).Scan(&loan.ID, &loan.Status, &loan.UserID, &loan.AdminID, &loan.CreationDate, &loan.EndingDate, &loan.ReturnDate, &loan.Observation, &loan.Price, &loan.PaymentMethod)
+	if errors.Is(err, sql.ErrNoRows) {
+		return loan, nil
+	}
+	if err != nil {
+		return loan, err
+	}
+	return loan, nil
+}
+
 // DBSaveLoan
 /*
 Guarda un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
@@ -452,6 +479,29 @@ func DBSaveLoan(loan models.Loan) error {
 	}(db)
 	query := "INSERT INTO loan (status, userid, adminid, creationdate, endingdate, returndate, observation, price, paymentmethod) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
 	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBDeleteLoan
+/*
+Elimina un prestamo de la base de datos segun el id. 
+Devuelve un error si hay un error en la base de datos.
+*/
+func DBDeleteLoan(id int) error {
+
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "DELETE FROM loan WHERE id = $1"
+	_, err := db.Exec(query, id)
 	if err != nil {
 		return err
 	}

@@ -2,12 +2,14 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
+
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/middlewares"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
-	"net/http"
-	"strconv"
 )
 
 // AdminRoutes
@@ -31,6 +33,7 @@ func AdminRoutes(r chi.Router) {
 
 		// Rutas para tipos de ítems
 		r.Route("/item-types", func(r chi.Router) {
+			r.Post("/", createItemType)               // Crear un tipo de ítem
 			r.Delete("/{itemTypeID}", DeleteItemType) // Eliminar un tipo de ítem
 			r.Patch("/{itemTypeID}", UpdateItemType)  // Actualizar un tipo de ítem
 			r.Get("/", GetItemTypes)                  // Obtener todos los tipos de ítems
@@ -75,7 +78,6 @@ y los guarda en la base de datos
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	// Crea un nuevo usuario a partir de los datos recibidos
 	var user models.User
-	// tal vez explota. falta probar
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		// Maneja el error si los datos no son correctos
@@ -104,7 +106,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, "User already exists", http.StatusBadRequest)
 	}
-
 }
 
 // DeleteUser
@@ -133,7 +134,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 /*
 Recibe los datos de un usuario y los actualiza en la base de datos
 */
-
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	// Captura el valor del parámetro userID de la URL
 	userID := chi.URLParam(r, "userID")
@@ -157,7 +157,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid user data", http.StatusBadRequest)
 		return
 	}
-
 }
 
 // GetUsers
@@ -318,7 +317,21 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func CreateLoan(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	var loan models.Loan
+
+	err := json.NewDecoder(r.Body).Decode(&loan)
+
+	if err != nil {
+		http.Error(w, "Invalid loan data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBSaveLoan(loan)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 // DeleteLoan
@@ -326,7 +339,22 @@ func CreateLoan(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un prestamo y lo elimina de la base de datos
 */
 func DeleteLoan(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	id, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan ID", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBDeleteLoan(int(id))
+
+	if err != nil {
+		http.Error(w, "Loan not found", http.StatusNotFound)
+		return
+	}
 }
 
 // UpdateLoan
@@ -334,7 +362,29 @@ func DeleteLoan(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un prestamo y los actualiza en la base de datos
 */
 func UpdateLoan(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	id, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan ID", http.StatusBadRequest)
+		return
+	}
+
+	loan, err := repositories.DBGetLoanByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Loan not found", http.StatusNotFound)
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&loan)
+
+	if err != nil {
+		http.Error(w, "Invalid loan data", http.StatusBadRequest)
+		return
+	}
 }
 
 // GetLoans
@@ -342,7 +392,20 @@ func UpdateLoan(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los prestamos de la base de datos
 */
 func GetLoans(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loans, err := repositories.DBShowLoans()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(loans)
+
+	if err != nil {
+		return
+	}
+
 }
 
 // GetLoan
@@ -350,7 +413,29 @@ func GetLoans(w http.ResponseWriter, r *http.Request) {
 Obtiene un prestamo de la base de datos
 */
 func GetLoan(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	id, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan ID", http.StatusBadRequest)
+		return
+	}
+
+	loan, err := repositories.DBGetLoanByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Loan not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(loan)
+
+	if err != nil {
+		return
+	}
 }
 
 // CreateLoanItem
