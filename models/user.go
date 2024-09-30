@@ -10,7 +10,7 @@ type User struct {
 	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	Lastname   string `json:"lastname"`
-	StudentId  int    //legajo  `json:"student_id"`
+	StudentId  int    `json:"student_id"` //legajo
 	Email      string `json:"email"`
 	Phone      int    `json:"phone"`
 	Role       string `json:"role"`
@@ -35,4 +35,21 @@ func (user *User) IsEmpty() bool {
 		}
 	}
 	return true
+}
+
+// CopyUserData
+/*
+Copia los datos de un usuario a otro siempre que los datos no sean vacios.
+*/
+func (user *User) CopyUserData(userToCopy User) {
+	value := reflect.ValueOf(user).Elem()
+	valueToCopy := reflect.ValueOf(userToCopy).Elem()
+	for i := 0; i < value.NumField(); i++ {
+		field := value.Field(i)
+		fieldToCopy := valueToCopy.Field(i)
+		if !fieldToCopy.IsZero() {
+			field.Set(fieldToCopy)
+		}
+	}
+
 }

@@ -232,6 +232,47 @@ func DBVerifyUser(id int) error {
 	return nil
 }
 
+// DBUpdateUser
+/*
+Actualiza un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
+*/
+func DBUpdateUser(id int, user models.User) error {
+	db := connect(false)
+	var findUser models.User
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
+	// Busco el usuario a actualizar
+	query := "SELECT * FROM users WHERE id = $1"
+	err := db.QueryRow(query, id).Scan(&findUser.ID,
+		&findUser.Name,
+		&findUser.Lastname,
+		&findUser.StudentId,
+		&findUser.Email,
+		&findUser.Phone,
+		&findUser.Role,
+		&findUser.Dni,
+		&findUser.CreatorId,
+		&findUser.School,
+		&findUser.IsVerified,
+		&findUser.Hash)
+	if err != nil {
+		return err
+	}
+	// Actualizo los campos que corresponda
+	findUser.CopyUserData(user)
+	// Actualizo el usuario en la BD
+	query = "UPDATE users SET name = $1, lastname = $2, studentid = $3, email = $4, phone = $5, role = $6, DNI = $7, creatorid = $8, school = $9, isverified = $10, hash = $11 WHERE id = $12"
+	_, err = db.Exec(query, findUser.Name, findUser.Lastname, findUser.StudentId, findUser.Email, findUser.Phone, findUser.Role, findUser.Dni, findUser.CreatorId, findUser.School, findUser.IsVerified, findUser.Hash, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // DBShowItemTypes
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
@@ -439,7 +480,7 @@ func DBShowLoans() ([]byte, error) {
 
 // DBGetLoanByID
 /*
-Obtiene un prestamo de la base de datos segun el id. 
+Obtiene un prestamo de la base de datos segun el id.
 Devuelve el prestamo correspondiente si el prestamo existe.
 Devuelve un prestamo vacio si el prestamo no existe o si hay un error en la base de datos.
 */
@@ -487,7 +528,7 @@ func DBSaveLoan(loan models.Loan) error {
 
 // DBDeleteLoan
 /*
-Elimina un prestamo de la base de datos segun el id. 
+Elimina un prestamo de la base de datos segun el id.
 Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteLoan(id int) error {
