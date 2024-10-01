@@ -233,7 +233,22 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func createItemType(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	var itemType models.ItemType
+
+	err := json.NewDecoder(r.Body).Decode(&itemType)
+
+	if err != nil {
+		http.Error(w, "Invalid item type data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBSaveItemType(itemType)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 // DeleteItemType
@@ -241,7 +256,22 @@ func createItemType(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un tipo de item y lo elimina de la base de datos
 */
 func DeleteItemType(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemTypeID := chi.URLParam(r, "itemTypeID")
+
+	id, err := strconv.ParseInt(itemTypeID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item type ID", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBDeleteItemType(int(id))
+
+	if err != nil {
+		http.Error(w, "Item type not found", http.StatusNotFound)
+		return
+	}
 }
 
 // UpdateItemType
@@ -249,7 +279,29 @@ func DeleteItemType(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un tipo de item y los actualiza en la base de datos
 */
 func UpdateItemType(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemTypeID := chi.URLParam(r, "itemTypeID")
+
+	id, err := strconv.ParseInt(itemTypeID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item type ID", http.StatusBadRequest)
+		return
+	}
+
+	itemType, err := repositories.DBGetItemTypeByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Item type not found", http.StatusNotFound)
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&itemType)
+
+	if err != nil {
+		http.Error(w, "Invalid item type data", http.StatusBadRequest)
+		return
+	}
 }
 
 // GetItemTypes
@@ -257,7 +309,19 @@ func UpdateItemType(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los tipos de item de la base de datos
 */
 func GetItemTypes(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemTypes, err := repositories.DBShowItemTypes()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(itemTypes)
+
+	if err != nil {
+		return
+	}
 }
 
 // GetItemType
@@ -265,7 +329,29 @@ func GetItemTypes(w http.ResponseWriter, r *http.Request) {
 Obtiene un tipo de item de la base de datos
 */
 func GetItemType(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemTypeID := chi.URLParam(r, "itemTypeID")
+
+	id, err := strconv.ParseInt(itemTypeID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item type ID", http.StatusBadRequest)
+		return
+	}
+
+	itemType, err := repositories.DBGetItemTypeByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Item type not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(itemType)
+
+	if err != nil {
+		return
+	}
 }
 
 // CreateItem
@@ -275,7 +361,22 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func CreateItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	var item models.Item
+
+	err := json.NewDecoder(r.Body).Decode(&item)
+
+	if err != nil {
+		http.Error(w, "Invalid item data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBSaveItem(item)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 // DeleteItem
@@ -283,7 +384,22 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un item y lo elimina de la base de datos
 */
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+
+	itemID := chi.URLParam(r, "itemID")
+
+	id, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBDeleteItem(int(id))
+
+	if err != nil {
+		http.Error(w, "Item not found", http.StatusNotFound)
+		return
+	}
 }
 
 // UpdateItem
@@ -291,7 +407,29 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un item y los actualiza en la base de datos
 */
 func UpdateItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemID := chi.URLParam(r, "itemID")
+
+	id, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	item, err := repositories.DBGetItemByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Item not found", http.StatusNotFound)
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&item)
+
+	if err != nil {
+		http.Error(w, "Invalid item data", http.StatusBadRequest)
+		return
+	}
 }
 
 // GetItems
@@ -299,7 +437,19 @@ func UpdateItem(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los items de la base de datos
 */
 func GetItems(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	items, err := repositories.DBShowItems()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(items)
+
+	if err != nil {
+		return
+	}
 }
 
 // GetItem
@@ -307,7 +457,29 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 Obtiene un item de la base de datos
 */
 func GetItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	itemID := chi.URLParam(r, "itemID")
+
+	id, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	item, err := repositories.DBGetItemByID(int(id))
+
+	if err != nil {
+		http.Error(w, "Item not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(item)
+
+	if err != nil {
+		return
+	}
 }
 
 // CreateLoan

@@ -273,6 +273,60 @@ func DBUpdateUser(id int, user models.User) error {
 	return nil
 }
 
+// DBGetItemTypeByID
+/*
+Busca un itemtype en la base de datos segun el id. 
+Devuelve el itemtype correspondiente si el itemtype existe.
+Devuelve un itemtype vacio si el itemtype no existe o si hay un error en la base de datos.
+*/
+func DBGetItemTypeByID(id int) (models.ItemType, error) {
+	var itemType models.ItemType
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "SELECT * FROM typeitem WHERE id = $1"
+	err := db.QueryRow(query, id).Scan(&itemType.ID, &itemType.Name, &itemType.IsGeneric)
+	if errors.Is(err, sql.ErrNoRows) {
+		return itemType, nil
+	}
+	if err != nil {
+		return itemType, err
+	}
+	return itemType, nil
+}
+
+// DBGetItemByID
+/*
+Busca un item en la base de datos segun el id.
+Devuelve el item correspondiente si el item existe.
+Devuelve un item vacio si el item no existe o si hay un error en la base de datos.
+*/
+func DBGetItemByID(id int) (models.Item, error) {
+	var item models.Item
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "SELECT * FROM item WHERE id = $1"
+	err := db.QueryRow(query, id).Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
+	if errors.Is(err, sql.ErrNoRows) {
+		return item, nil
+	}
+	if err != nil {
+		return item, err
+	}
+	return item, nil
+}
+
 // DBShowItemTypes
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
@@ -432,6 +486,48 @@ func DBUpdateItem(item models.Item) error {
 	}(db)
 	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
 	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBDeleteItemType
+/*
+Elimina un itemtype de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
+*/
+func DBDeleteItemType(id int) error {
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "DELETE FROM typeitem WHERE id = $1"
+	_, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBDeleteItem
+/*
+Elimina un item de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
+*/
+func DBDeleteItem(id int) error {
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "DELETE FROM item WHERE id = $1"
+	_, err := db.Exec(query, id)
 	if err != nil {
 		return err
 	}
