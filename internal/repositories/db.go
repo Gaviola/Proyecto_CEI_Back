@@ -572,9 +572,49 @@ func DBUpdateLoan(loan models.Loan) error {
 
 // DBShowLoanItems
 /*
+Devuelve una lista con los items de los prestamos que hay en la base de datos en formato JSON.
+*/
+func DBShowLoanItems() ([]byte, error) {
+	var loanItems []models.LoanItem
+
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "SELECT * FROM loanitem"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var loanItem models.LoanItem
+		err := rows.Scan(&loanItem.LoanID, &loanItem.ItemID)
+		if err != nil {
+			return nil, err
+		}
+		loanItems = append(loanItems, loanItem)
+	}
+
+	// Convertir a JSON
+	jsonData, err := json.Marshal(loanItems)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
+}
+
+// DBShowLoanItemsByLoanID
+/*
 Devuelve una lista con los items de un prestamo en formato JSON.
 */
-func DBShowLoanItems(loanID int) ([]byte, error) {
+func DBShowLoanItemsByLoanID(loanID int) ([]byte, error) {
 	var loanItems []models.LoanItem
 
 	db := connect(false)
@@ -608,6 +648,33 @@ func DBShowLoanItems(loanID int) ([]byte, error) {
 	}
 
 	return jsonData, nil
+}
+
+// DBGetLoanItem
+/*
+Obtiene un item de un prestamo de la base de datos segun el id del prestamo y el id del item.
+Devuelve el item correspondiente si el item existe.
+Devuelve un item vacio si el item no existe o si hay un error en la base de datos.
+*/
+func DBGetLoanItem(loanID int, itemID int) (models.LoanItem, error) {
+	var loanItem models.LoanItem
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "SELECT * FROM loanitem WHERE loanid = $1 AND itemid = $2"
+	err := db.QueryRow(query, loanID, itemID).Scan(&loanItem.LoanID, &loanItem.ItemID)
+	if errors.Is(err, sql.ErrNoRows) {
+		return loanItem, nil
+	}
+	if err != nil {
+		return loanItem, err
+	}
+	return loanItem, nil
 }
 
 // DBSaveLoanItem
@@ -646,6 +713,28 @@ func DBUpdateLoanItem(loanItem models.LoanItem) error {
 	}(db)
 	query := "UPDATE loanitem SET loanid = $1, itemid = $2 WHERE loanid = $3 AND itemid = $4"
 	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID, loanItem.LoanID, loanItem.ItemID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DBDeleteLoanItem
+/*
+Elimina un item de un prestamo de la base de datos segun el id del prestamo y el id del item.
+Devuelve un error si hay un error en la base de datos.
+*/
+func DBDeleteLoanItem(loanID int, itemID int) error {
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(db)
+	query := "DELETE FROM loanitem WHERE loanid = $1 AND itemid = $2"
+	_, err := db.Exec(query, loanID, itemID)
 	if err != nil {
 		return err
 	}

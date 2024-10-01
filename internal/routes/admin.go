@@ -445,7 +445,22 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	var loanItem models.LoanItem
+
+	err := json.NewDecoder(r.Body).Decode(&loanItem)
+
+	if err != nil {
+		http.Error(w, "Invalid loan item data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBSaveLoanItem(loanItem)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 // DeleteLoanItem
@@ -453,7 +468,32 @@ func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un item de prestamo y lo elimina de la base de datos
 */
 func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	lid, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan item ID", http.StatusBadRequest)
+		return
+	}
+
+	itemID := chi.URLParam(r, "itemID")
+
+	iid, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBDeleteLoanItem(int(lid), int(iid))
+
+	if err != nil {
+		http.Error(w, "Loan item not found", http.StatusNotFound)
+		return
+	}
+	
 }
 
 // UpdateLoanItem
@@ -461,7 +501,38 @@ func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un item de prestamo y los actualiza en la base de datos
 */
 func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	lid, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan item ID", http.StatusBadRequest)
+		return
+	}
+
+	itemID := chi.URLParam(r, "itemID")
+
+	iid, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	loanItem, err := repositories.DBGetLoanItem(int(lid), int(iid))
+
+	if err != nil {
+		http.Error(w, "Loan item not found", http.StatusNotFound)
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&loanItem)
+
+	if err != nil {
+		http.Error(w, "Invalid loan item data", http.StatusBadRequest)
+		return
+	}
 }
 
 // GetLoanItems
@@ -469,7 +540,19 @@ func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los items de prestamo de la base de datos
 */
 func GetLoanItems(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanItems, err := repositories.DBShowLoanItems()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(loanItems)
+
+	if err != nil {
+		return
+	}
 }
 
 // GetLoanItem
@@ -477,5 +560,36 @@ func GetLoanItems(w http.ResponseWriter, r *http.Request) {
 Obtiene un item de prestamo de la base de datos
 */
 func GetLoanItem(w http.ResponseWriter, r *http.Request) {
-	//TODO implementar
+	
+	loanID := chi.URLParam(r, "loanID")
+
+	lid, err := strconv.ParseInt(loanID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid loan item ID", http.StatusBadRequest)
+		return
+	}
+
+	itemID := chi.URLParam(r, "itemID")
+
+	iid, err := strconv.ParseInt(itemID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item ID", http.StatusBadRequest)
+		return
+	}
+
+	loanItem, err := repositories.DBGetLoanItem(int(lid), int(iid))
+
+	if err != nil {
+		http.Error(w, "Loan item not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(loanItem)
+
+	if err != nil {
+		return
+	}
 }
