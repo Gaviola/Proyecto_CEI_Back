@@ -343,7 +343,7 @@ func DBGetItemByID(id int) (models.Item, error) {
 /*
 Devuelve una lista con los tipos de items que hay en la base de datos.
 */
-func DBShowItemTypes() ([]byte, error) {
+func DBShowItemTypes() ([]models.ItemType, error) {
 	var itemTypes []models.ItemType
 
 	db := connect(false)
@@ -369,13 +369,7 @@ func DBShowItemTypes() ([]byte, error) {
 		itemTypes = append(itemTypes, itemType)
 	}
 
-	// Convertir a JSON
-	jsonData, err := json.Marshal(itemTypes)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
+	return itemTypes , nil
 }
 
 // DBShowItems

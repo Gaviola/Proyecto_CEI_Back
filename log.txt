@@ -228,3 +228,48 @@
 {"level":"info","time":"2024-09-24T13:52:58.036-0300","file":"services/google.go:79","msg":"TOKEN>> RefreshToken>> "}
 {"level":"info","time":"2024-09-24T13:52:58.211-0300","file":"services/google.go:96","msg":"parseResponseBody: {\n  \"id\": \"110315206419851212680\",\n  \"email\": \"agustinyornet@gmail.com\",\n  \"verified_email\": true,\n  \"picture\": \"https://lh3.googleusercontent.com/a-/ALV-UjWXkNQdQhq2Zs9QjIrztmyxQb5R2C0_lhLOO59AeYH_F6SmLpe9DQ=s96-c\"\n}\n\n"}
 {"level":"info","time":"2024-09-24T13:52:58.546-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:10:53.952-0300","file":"CEI/main.go:84","msg":"Started running on http://localhost:8080"}
+{"level":"info","time":"2024-10-02T18:24:26.847-0300","file":"CEI/main.go:84","msg":"Started running on http://localhost:8080"}
+{"level":"info","time":"2024-10-02T18:32:36.161-0300","file":"CEI/main.go:95","msg":"Started running on http://localhost:8080"}
+{"level":"info","time":"2024-10-02T18:38:34.154-0300","file":"CEI/main.go:95","msg":"Started running on http://localhost:8080"}
+{"level":"info","time":"2024-10-02T18:41:27.076-0300","file":"CEI/main.go:90","msg":"Started running on http://localhost:8080"}
+{"level":"info","time":"2024-10-02T18:43:50.487-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:44:16.215-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:45:23.190-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:01.163-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:01.215-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:01.264-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:11.978-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:22.672-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:23.116-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:26.433-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:26.612-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:49.219-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:47:49.992-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:48:08.494-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:48:08.936-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:48:16.210-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-10-02T18:48:16.210-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-10-02T18:49:17.084-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:49:37.678-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:49:38.036-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:49:40.801-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-10-02T18:49:40.802-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-10-02T18:49:46.331-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:49:50.530-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-10-02T18:49:50.534-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-10-02T18:49:54.921-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:50:06.816-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:26.750-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:33.770-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:36.513-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:38.008-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:59.512-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T18:59:59.615-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T19:00:29.225-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T19:00:49.151-0300","file":"services/common.go:22","msg":"Index page.."}
+{"level":"info","time":"2024-10-02T19:01:16.822-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-10-02T19:01:16.823-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-10-02T19:04:11.616-0300","file":"services/common.go:35","msg":"https://accounts.google.com/o/oauth2/auth"}
+{"level":"info","time":"2024-10-02T19:04:11.616-0300","file":"services/common.go:44","msg":"https://accounts.google.com/o/oauth2/auth?client_id=413952983968-jjpnirrjpmn2u1mmgji86dvs6pqq2kn0.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback-gl&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state="}
+{"level":"info","time":"2024-10-02T19:06:27.446-0300","file":"CEI/main.go:66","msg":"Started running on http://localhost:8080"}

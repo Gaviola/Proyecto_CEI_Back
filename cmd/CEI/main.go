@@ -1,17 +1,18 @@
 package main
 
 import (
-	"bufio"
-	"strings"
+	//"bufio"
+	//"strings"
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/logger"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
+	//"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/routes"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
-	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
+	//"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/rs/cors"
 
 	"crypto/rand"
 	"encoding/base64"
@@ -28,6 +29,14 @@ import (
 
 func main() {
 
+	// Configurar CORS usando la librería rs/cors
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080"},                   // Orígenes permitidos
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // Métodos permitidos
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},           // Cabeceras permitidas
+		AllowCredentials: true,
+	})
+
 	r := chi.NewRouter()
 
 	// Middlewares
@@ -38,6 +47,8 @@ func main() {
 	routes.LoginRoutes(r)
 	routes.RegisterRoutes(r)
 	routes.AdminRoutes(r)
+
+	handler := c.Handler(r)
 
 	// Initialize Viper across the application
 	configs.InitializeViper()
@@ -50,6 +61,12 @@ func main() {
 	// Initialize Oauth2 Services
 	services.InitializeOAuthGoogle()
 	fmt.Println("OAuth2 Services initialized...")
+
+	fmt.Println("Servidor escuchando en http://localhost:8080")
+	// logger.Log.Info("Started running on http://localhost:" + viper.GetString("port")) // Log the port where the server is running
+	log.Fatal(http.ListenAndServe(":8080", handler))
+
+	
 
 	var opcion int
 	fmt.Println("DEBUG MENU")
@@ -82,7 +99,7 @@ func main() {
 
 		fmt.Println("Servidor escuchando en http://localhost:8080")
 		logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
-		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
+		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), handler))
 
 	case 2:
 		w := http.ResponseWriter(nil)
@@ -92,60 +109,8 @@ func main() {
 		}
 
 		routes.LoginGoogle(w, r)
+
 		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
-
-	case 3:
-		itemTypesJSON, err := repositories.DBShowItemTypes()
-		// Print item types in JSON
-		for _, itemType := range strings.Split(string(itemTypesJSON), "},") {
-			fmt.Println(itemType)
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-
-	case 4:
-		itemsJSON, err := repositories.DBShowItems()
-		// Print items in JSON separated by line breaks
-		for _, item := range strings.Split(string(itemsJSON), "},") {
-			fmt.Println(item)
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-
-	case 5:
-		in := bufio.NewReader(os.Stdin)
-		// Preguntar por los datos del nuevo ItemType
-		var name string
-		var isGenericStr string
-		var isGeneric bool
-
-		fmt.Print("Nombre del nuevo ItemType: ")
-		name, _ = in.ReadString('\n')
-
-		fmt.Print("Es genérico? (s/n): ")
-		isGenericStr, _ = in.ReadString('\n')
-		if isGenericStr == "s\n" {
-			isGeneric = true
-		} else {
-			isGeneric = false
-		}
-
-		// Crear el nuevo ItemType
-		newItemType := models.ItemType{
-			Name:      name,
-			IsGeneric: isGeneric,
-		}
-
-		// Insertar el nuevo ItemType en la base de datos
-		err := repositories.DBSaveItemType(newItemType)
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			fmt.Println("ItemType creado con éxito")
-		}
-
 	default:
 		fmt.Println("Saliendo...")
 	}
