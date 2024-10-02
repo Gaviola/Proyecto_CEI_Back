@@ -24,7 +24,7 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/spf13/viper"
+	// "github.com/spf13/viper"
 )
 
 func main() {
@@ -62,57 +62,22 @@ func main() {
 	services.InitializeOAuthGoogle()
 	fmt.Println("OAuth2 Services initialized...")
 
+	//Crear llave secreta
+	key := make([]byte, 64)
+	_, err := rand.Read(key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	secret := base64.StdEncoding.EncodeToString(key)
+	err = os.Setenv("JWT_SECRET", secret)
+	if err != nil {
+		http.Error(nil, "Error al setear la variables de entorno", http.StatusInternalServerError)
+		return
+	}
+
 	fmt.Println("Servidor escuchando en http://localhost:8080")
 	// logger.Log.Info("Started running on http://localhost:" + viper.GetString("port")) // Log the port where the server is running
 	log.Fatal(http.ListenAndServe(":8080", handler))
 
-	
-
-	var opcion int
-	fmt.Println("DEBUG MENU")
-	fmt.Println("[1] \tSetear variables de entorno")
-	fmt.Println("[2] \tGoogle Login")
-	fmt.Println("[3] \tPrueba de ItemTypes")
-	fmt.Println("[4] \tPrueba de Items")
-	fmt.Println("[5] \tPrueba de Crear ItemType")
-	fmt.Println("[OTRO] \tSalir")
-
-	fmt.Print("> Ingrese una opción: ")
-	fmt.Scan(&opcion)
-	fmt.Println()
-
-	switch opcion {
-	case 1:
-		fmt.Println("Has seleccionado la opción 1")
-		//Crear llave secreta
-		key := make([]byte, 64)
-		_, err := rand.Read(key)
-		if err != nil {
-			log.Fatal(err)
-		}
-		secret := base64.StdEncoding.EncodeToString(key)
-		err = os.Setenv("JWT_SECRET", secret)
-		if err != nil {
-			http.Error(nil, "Error al setear la variables de entorno", http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Println("Servidor escuchando en http://localhost:8080")
-		logger.Log.Info("Started running on http://localhost:" + viper.GetString("port"))
-		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), handler))
-
-	case 2:
-		w := http.ResponseWriter(nil)
-		r, err := http.NewRequest("GET", "/", nil)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		routes.LoginGoogle(w, r)
-
-		log.Fatal(http.ListenAndServe(":"+viper.GetString("port"), nil))
-	default:
-		fmt.Println("Saliendo...")
-	}
 
 }
