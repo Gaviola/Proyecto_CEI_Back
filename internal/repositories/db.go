@@ -543,7 +543,7 @@ func DBDeleteItem(id int) error {
 /*
 Devuelve una lista con los prestamos que hay en la base de datos en formato JSON.
 */
-func DBShowLoans() ([]byte, error) {
+func DBShowLoans() ([]models.Loan, error) {
 	var loans []models.Loan
 
 	db := connect(false)
@@ -554,29 +554,25 @@ func DBShowLoans() ([]byte, error) {
 			fmt.Println(err)
 		}
 	}(db)
-	query := "SELECT * FROM loan"
+	query := "SELECT * FROM loan;"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
+	fmt.Println("DB Result: ", rows)
 	for rows.Next() {
 		var loan models.Loan
 		err := rows.Scan(&loan.ID, &loan.Status, &loan.UserID, &loan.AdminID, &loan.CreationDate, &loan.EndingDate, &loan.ReturnDate, &loan.Observation, &loan.Price, &loan.PaymentMethod)
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		loans = append(loans, loan)
 	}
 
-	// Convertir a JSON
-	jsonData, err := json.Marshal(loans)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
+	return loans, nil
 }
 
 // DBGetLoanByID

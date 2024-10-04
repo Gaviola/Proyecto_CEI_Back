@@ -1,5 +1,7 @@
 package models
 
+import "database/sql"
+
 // Loan
 /*
 Estructura de datos de un préstamo.
@@ -12,8 +14,8 @@ type Loan struct {
 	CreationDate  string
 	EndingDate    string
 	ReturnDate    string
-	Observation   string
+	Observation   sql.NullString
 	Price         float64
-	PaymentMethod string
+	PaymentMethod sql.NullString
 }
 
