@@ -733,25 +733,17 @@ Obtiene un item de prestamo de la base de datos
 */
 func GetLoanItem(w http.ResponseWriter, r *http.Request) {
 	
-	loanID := chi.URLParam(r, "loanID")
+	loanID := chi.URLParam(r, "loanItemID")
 
-	lid, err := strconv.ParseInt(loanID, 10, 0)
+	lid, err := strconv.Atoi(loanID)
 
+	fmt.Println("Loan ID: ", lid)
 	if err != nil {
 		http.Error(w, "Invalid loan item ID", http.StatusBadRequest)
 		return
 	}
 
-	itemID := chi.URLParam(r, "itemID")
-
-	iid, err := strconv.ParseInt(itemID, 10, 0)
-
-	if err != nil {
-		http.Error(w, "Invalid item ID", http.StatusBadRequest)
-		return
-	}
-
-	loanItem, err := repositories.DBGetLoanItem(int(lid), int(iid))
+	loanItem, err := repositories.DBShowLoanItemsByLoanID(lid)
 
 	if err != nil {
 		http.Error(w, "Loan item not found", http.StatusNotFound)

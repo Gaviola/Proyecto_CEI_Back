@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -675,7 +674,7 @@ func DBUpdateLoan(loan models.Loan) error {
 /*
 Devuelve una lista con los items de los prestamos que hay en la base de datos en formato JSON.
 */
-func DBShowLoanItems() ([]byte, error) {
+func DBShowLoanItems() ([]models.LoanItem, error) {
 	var loanItems []models.LoanItem
 
 	db := connect(false)
@@ -702,20 +701,15 @@ func DBShowLoanItems() ([]byte, error) {
 		loanItems = append(loanItems, loanItem)
 	}
 
-	// Convertir a JSON
-	jsonData, err := json.Marshal(loanItems)
-	if err != nil {
-		return nil, err
-	}
 
-	return jsonData, nil
+	return loanItems, nil
 }
 
 // DBShowLoanItemsByLoanID
 /*
 Devuelve una lista con los items de un prestamo en formato JSON.
 */
-func DBShowLoanItemsByLoanID(loanID int) ([]byte, error) {
+func DBShowLoanItemsByLoanID(loanID int) ([]models.LoanItem, error) {
 	var loanItems []models.LoanItem
 
 	db := connect(false)
@@ -742,13 +736,7 @@ func DBShowLoanItemsByLoanID(loanID int) ([]byte, error) {
 		loanItems = append(loanItems, loanItem)
 	}
 
-	// Convertir a JSON
-	jsonData, err := json.Marshal(loanItems)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
+	return loanItems, nil
 }
 
 // DBGetLoanItem
