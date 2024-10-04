@@ -328,8 +328,8 @@ func DBGetItemByID(id int) (models.Item, error) {
 			fmt.Println()
 		}
 	}(db)
-	query := "SELECT * FROM item WHERE id = $1"
-	err := db.QueryRow(query, id).Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
+	query := "select e.id, it.name, e.typeid, e.code, e.price from item e join typeitem it on e.typeid = it.id WHERE e.id = $1"
+	err := db.QueryRow(query, id).Scan(&item.ID, &item.ItemType, &item.ItemTypeID, &item.Code, &item.Price)
 	if errors.Is(err, sql.ErrNoRows) {
 		return item, nil
 	}
@@ -376,7 +376,7 @@ func DBShowItemTypes() ([]models.ItemType, error) {
 /*
 Devuelve una lista con los items que hay en la base de datos en formato JSON.
 */
-func DBShowItems() ([]byte, error) {
+func DBShowItems() ([]models.Item, error) {
 	var items []models.Item
 
 	db := connect(false)
@@ -387,30 +387,25 @@ func DBShowItems() ([]byte, error) {
 			fmt.Println(err)
 		}
 	}(db)
-	query := "select it.id, it.name, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
+	query := "select e.id, it.name, e.typeid, e.code, e.price from item e join typeitem it on e.typeid = it.id;"
 
 	rows, err := db.Query(query)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var item models.Item
-		err := rows.Scan(&item.ID, &item.ItemType, &item.Code, &item.Price)
+		err := rows.Scan(&item.ID, &item.ItemType, &item.ItemTypeID, &item.Code, &item.Price)
 		if err != nil {
 			return nil, err
 		}
 		items = append(items, item)
 	}
 
-	// Convertir a JSON
-	jsonData, err := json.Marshal(items)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
+	return items, nil
 }
 
 // DBSaveItemType
