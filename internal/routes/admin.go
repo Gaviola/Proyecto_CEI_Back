@@ -322,6 +322,13 @@ func UpdateItemType(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid item type data", http.StatusBadRequest)
 		return
 	}
+
+	err = repositories.DBUpdateItemType(itemType)
+
+	if err != nil {
+		http.Error(w, "Error updating item type", http.StatusInternalServerError)
+		return
+	}
 }
 
 // GetItemTypes
