@@ -443,7 +443,7 @@ func DBSaveItem(item models.Item) error {
 		}
 	}(db)
 	query := "INSERT INTO item (typeid, code, price) VALUES ($1, $2, $3)"
-	_, err := db.Exec(query, item.ItemType, item.Code, item.Price)
+	_, err := db.Exec(query, item.ItemTypeID, item.Code, item.Price)
 	if err != nil {
 		return err
 	}
@@ -485,7 +485,7 @@ func DBUpdateItem(item models.Item) error {
 		}
 	}(db)
 	query := "UPDATE item SET typeid = $1, code = $2, price = $3 WHERE id = $4"
-	_, err := db.Exec(query, item.ItemType, item.Code, item.Price, item.ID)
+	_, err := db.Exec(query, item.ItemTypeID, item.Code, item.Price, item.ID)
 	if err != nil {
 		return err
 	}
