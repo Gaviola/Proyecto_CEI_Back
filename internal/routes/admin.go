@@ -457,6 +457,13 @@ func UpdateItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid item data", http.StatusBadRequest)
 		return
 	}
+
+	err = repositories.DBUpdateItem(item)
+
+	if err != nil {
+		http.Error(w, "Error updating item", http.StatusInternalServerError)
+		return
+	}
 }
 
 // GetItems
