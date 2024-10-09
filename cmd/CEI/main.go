@@ -46,7 +46,6 @@ func main() {
 
 	// Rutas de la aplicacion
 	routes.LoginRoutes(r)
-
 	routes.AdminRoutes(r)
 	routes.RegisterRoutes(r)
 

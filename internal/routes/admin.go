@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	// "github.com/Gaviola/Proyecto_CEI_Back.git/internal/middlewares"
+	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/middlewares"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
@@ -18,8 +19,8 @@ Agrega las rutas de la API que requieren autenticación y permisos de administra
 */
 func AdminRoutes(r chi.Router) {
 	r.Route("/admin", func(r chi.Router) {
-		// r.Use(middlewares.AuthMiddleware)  // Middleware de verificación de token
-		// r.Use(middlewares.AdminMiddleware) // Middleware de verificación de admin
+		r.Use(middlewares.AuthMiddleware)  // Middleware de verificación de token
+		r.Use(middlewares.AdminMiddleware) // Middleware de verificación de admin
 
 		// Rutas para usuarios
 		r.Route("/users", func(r chi.Router) {

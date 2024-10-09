@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -38,24 +39,22 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
+		http.Error(w, "Peticion invalida", http.StatusBadRequest)
 		return
 	}
 
-	// Busca el usuario en la base de datos segun el hash de la contraseña y username
-	var hash []byte
-	hash, err = bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
+	// Busca el usuario en la base de datos segun el mail
+	user, err = repositories.DBGetUserByEmail(creds.Username)
 	if err != nil {
-		http.Error(w, "Error de servidor", http.StatusInternalServerError)
+		http.Error(w, "Error de servidor en la busqueda del usuario", http.StatusInternalServerError)
 		return
 	}
-	user, err = repositories.DBExistUser(hash, creds.Username)
+	hashedPassword := user.Hash
+
+	// Compara la contraseña ingresada con la contraseña hasheada en la base de datos
+	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(creds.Password))
 	if err != nil {
-		if user.IsEmpty() {
-			http.Error(w, "Usuario no encontrado", http.StatusUnauthorized)
-			return
-		}
-		http.Error(w, "Error de servidor", http.StatusInternalServerError)
+		http.Error(w, "Contraseña ingresada incorrecta", http.StatusUnauthorized)
 		return
 	}
 
@@ -71,14 +70,20 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// utilizar llave secreta para firmar el token
-		secretKey := os.Getenv("JWT_SECRET")
-		if secretKey == "" {
+		var secretKey []byte
+		secretKey, err = base64.StdEncoding.DecodeString(os.Getenv("JWT_SECRET"))
+		if err != nil {
+			http.Error(w, "No se pudo decodificar la llave secreta", http.StatusInternalServerError)
+			return
+		}
+		key := string(secretKey)
+		if key == "" {
 			http.Error(w, "No se ha definido una llave secreta", http.StatusInternalServerError)
 			return
 		}
 
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString([]byte(secretKey))
+		tokenString, err := token.SignedString([]byte(key))
 		if err != nil {
 			http.Error(w, "No se pudo generar el token", http.StatusInternalServerError)
 			return
@@ -186,13 +191,14 @@ func generateResetToken(user models.User) (string, error) {
 	}
 
 	// utilizar llave secreta para firmar el token
-	secretKey := os.Getenv("JWT_SECRET")
-	if secretKey == "" {
-		return "", errors.New("no se ha definido una llave secreta")
+	var secretKey []byte
+	secretKey, err := base64.StdEncoding.DecodeString(os.Getenv("JWT_SECRET"))
+	if err != nil {
+		return "", errors.New("no se pudo decodificar la llave secreta")
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(secretKey))
+	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
 		return "", errors.New("no se pudo generar el token")
 	}
@@ -222,14 +228,19 @@ func sendPasswordResetEmail(toEmail string, token string) error {
 }
 
 func ResetPassword(w http.ResponseWriter, r *http.Request) {
-	var jwtKey = []byte(os.Getenv("JWT_SECRET"))
+	var secretKey []byte
+	secretKey, err := base64.StdEncoding.DecodeString(os.Getenv("JWT_SECRET"))
+	if err != nil {
+		http.Error(w, "No se pudo decodificar la llave secreta", http.StatusInternalServerError)
+		return
+	}
 	// Obtener el token de la URL.
 	tokenString := r.URL.Query().Get("token")
 
 	// Parsear y verificar el token.
 	claims := &models.Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		return secretKey, nil
 	})
 
 	if err != nil || !token.Valid {

@@ -1,19 +1,28 @@
 package middlewares
 
 import (
-	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
-	"github.com/dgrijalva/jwt-go"
+	"encoding/base64"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
+	"github.com/dgrijalva/jwt-go"
 )
+
 // AuthMiddleware
 /*
 Middleware para verificar el token de autorización en las rutas.
 */
 func AuthMiddleware(next http.Handler) http.Handler {
-	var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var jwtKey []byte
+		jwtKey, err := base64.StdEncoding.DecodeString(os.Getenv("JWT_SECRET"))
+		if err != nil {
+			http.Error(w, "Error al decodificar la llave secreta", http.StatusInternalServerError)
+			return
+		}
+
 		// Obtener el token del header Authorization
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
