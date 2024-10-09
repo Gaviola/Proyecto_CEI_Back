@@ -54,7 +54,7 @@ Devuelve un usuario vacio si el usuario no existe o si hay un error en la base d
 */
 func DBExistUser(passHash []byte, user string) (models.User, error) {
 	findUser := models.User{}
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -77,7 +77,7 @@ Busca un usuario en la base de datos segun el id. Devuelve true si el usuario ex
 existe o si hay un error en la base de datos.
 */
 func DBCheckUser(mail string) (bool, error) {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -100,7 +100,7 @@ Devuelve un usuario vacio si el usuario no existe o si hay un error en la base d
 */
 func DBGetUserByEmail(email string) (models.User, error) {
 	var user models.User
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -125,7 +125,7 @@ Busca un usuario en la base de datos segun el id. Devuelve el usuario correspond
 */
 func DBGetUserByID(id int) (models.User, error) {
 	var user models.User
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -149,7 +149,7 @@ func DBGetUserByID(id int) (models.User, error) {
 Guarda un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBSaveUser(user models.User) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -171,7 +171,7 @@ func DBSaveUser(user models.User) error {
 Elimina un usuario de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteUser(id int) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -193,7 +193,7 @@ Devuelve una lista con todos los usuarios que hay en la base de datos.
 */
 func DBGetAllUsers() ([]models.User, error) {
 	var users []models.User
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -223,7 +223,7 @@ func DBGetAllUsers() ([]models.User, error) {
 Verifica un usuario en la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
 */
 func DBVerifyUser(id int) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -244,7 +244,7 @@ func DBVerifyUser(id int) error {
 Actualiza un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBUpdateUser(id int, user models.User) error {
-	db := connect(false)
+	db := connect(true)
 	var findUser models.User
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -286,13 +286,13 @@ func DBUpdateUser(id int, user models.User) error {
 
 // DBGetItemTypeByID
 /*
-Busca un itemtype en la base de datos segun el id. 
+Busca un itemtype en la base de datos segun el id.
 Devuelve el itemtype correspondiente si el itemtype existe.
 Devuelve un itemtype vacio si el itemtype no existe o si hay un error en la base de datos.
 */
 func DBGetItemTypeByID(id int) (models.ItemType, error) {
 	var itemType models.ItemType
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -319,7 +319,7 @@ Devuelve un item vacio si el item no existe o si hay un error en la base de dato
 */
 func DBGetItemByID(id int) (models.Item, error) {
 	var item models.Item
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -345,7 +345,7 @@ Devuelve una lista con los tipos de items que hay en la base de datos.
 func DBShowItemTypes() ([]models.ItemType, error) {
 	var itemTypes []models.ItemType
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -368,7 +368,7 @@ func DBShowItemTypes() ([]models.ItemType, error) {
 		itemTypes = append(itemTypes, itemType)
 	}
 
-	return itemTypes , nil
+	return itemTypes, nil
 }
 
 // DBShowItems
@@ -378,7 +378,7 @@ Devuelve una lista con los items que hay en la base de datos en formato JSON.
 func DBShowItems() ([]models.Item, error) {
 	var items []models.Item
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -412,7 +412,7 @@ func DBShowItems() ([]models.Item, error) {
 Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBSaveItemType(itemType models.ItemType) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -434,7 +434,7 @@ Guarda un item en la base de datos. Devuelve un error si hay un error en la base
 */
 func DBSaveItem(item models.Item) error {
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -455,7 +455,7 @@ func DBSaveItem(item models.Item) error {
 Actualiza un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBUpdateItemType(itemType models.ItemType) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -476,7 +476,7 @@ func DBUpdateItemType(itemType models.ItemType) error {
 Actualiza un item en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBUpdateItem(item models.Item) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -497,7 +497,7 @@ func DBUpdateItem(item models.Item) error {
 Elimina un itemtype de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteItemType(id int) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -518,7 +518,7 @@ func DBDeleteItemType(id int) error {
 Elimina un item de la base de datos segun el id. Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteItem(id int) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -545,7 +545,7 @@ Devuelve una lista con los prestamos que hay en la base de datos en formato JSON
 func DBShowLoans() ([]models.Loan, error) {
 	var loans []models.Loan
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -582,7 +582,7 @@ Devuelve un prestamo vacio si el prestamo no existe o si hay un error en la base
 */
 func DBGetLoanByID(id int) (models.Loan, error) {
 	var loan models.Loan
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -606,7 +606,7 @@ func DBGetLoanByID(id int) (models.Loan, error) {
 Guarda un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBSaveLoan(loan models.Loan) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -629,7 +629,7 @@ Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteLoan(id int) error {
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -650,7 +650,7 @@ func DBDeleteLoan(id int) error {
 Actualiza un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBUpdateLoan(loan models.Loan) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -677,7 +677,7 @@ Devuelve una lista con los items de los prestamos que hay en la base de datos en
 func DBShowLoanItems() ([]models.LoanItem, error) {
 	var loanItems []models.LoanItem
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -701,7 +701,6 @@ func DBShowLoanItems() ([]models.LoanItem, error) {
 		loanItems = append(loanItems, loanItem)
 	}
 
-
 	return loanItems, nil
 }
 
@@ -712,7 +711,7 @@ Devuelve una lista con los items de un prestamo en formato JSON.
 func DBShowLoanItemsByLoanID(loanID int) ([]models.LoanItem, error) {
 	var loanItems []models.LoanItem
 
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -747,7 +746,7 @@ Devuelve un item vacio si el item no existe o si hay un error en la base de dato
 */
 func DBGetLoanItem(loanID int, itemID int) (models.LoanItem, error) {
 	var loanItem models.LoanItem
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -771,7 +770,7 @@ func DBGetLoanItem(loanID int, itemID int) (models.LoanItem, error) {
 Guarda un item de un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBSaveLoanItem(loanItem models.LoanItem) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -792,7 +791,7 @@ func DBSaveLoanItem(loanItem models.LoanItem) error {
 Actualiza un item de un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
 func DBUpdateLoanItem(loanItem models.LoanItem) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()
@@ -814,7 +813,7 @@ Elimina un item de un prestamo de la base de datos segun el id del prestamo y el
 Devuelve un error si hay un error en la base de datos.
 */
 func DBDeleteLoanItem(loanID int, itemID int) error {
-	db := connect(false)
+	db := connect(true)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
 		err := db.Close()

@@ -128,6 +128,12 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
+	//Envio el mensaje de que se elimino el usuario
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(map[string]string{"message": "User deleted"})
+	if err != nil {
+		return
+	}
 }
 
 // UpdateUser
@@ -155,6 +161,17 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// Maneja el error si los datos no son correctos
 		http.Error(w, "Invalid user data", http.StatusBadRequest)
+		return
+	}
+	err = repositories.DBUpdateUser(int(id), user)
+	if err != nil {
+		http.Error(w, "Error updating user", http.StatusInternalServerError)
+		return
+	}
+	// Responde con el usuario actualizado
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(user)
+	if err != nil {
 		return
 	}
 }
@@ -223,7 +240,9 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error while verifying the user", http.StatusNotFound)
 		return
 	}
-	print(id) // Debug: DELETE LATER
+	// Responde con el mensaje de que el usuario fue verificado
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(map[string]string{"message": "User verified"})
 }
 
 // CreateItemType
@@ -233,7 +252,7 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func createItemType(w http.ResponseWriter, r *http.Request) {
-	
+
 	var itemType models.ItemType
 
 	err := json.NewDecoder(r.Body).Decode(&itemType)
@@ -256,7 +275,7 @@ func createItemType(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un tipo de item y lo elimina de la base de datos
 */
 func DeleteItemType(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemTypeID := chi.URLParam(r, "itemTypeID")
 
 	id, err := strconv.ParseInt(itemTypeID, 10, 0)
@@ -279,7 +298,7 @@ func DeleteItemType(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un tipo de item y los actualiza en la base de datos
 */
 func UpdateItemType(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemTypeID := chi.URLParam(r, "itemTypeID")
 
 	id, err := strconv.ParseInt(itemTypeID, 10, 0)
@@ -309,7 +328,7 @@ func UpdateItemType(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los tipos de item de la base de datos
 */
 func GetItemTypes(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemTypes, err := repositories.DBShowItemTypes()
 
 	if err != nil {
@@ -329,7 +348,7 @@ func GetItemTypes(w http.ResponseWriter, r *http.Request) {
 Obtiene un tipo de item de la base de datos
 */
 func GetItemType(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemTypeID := chi.URLParam(r, "itemTypeID")
 
 	id, err := strconv.ParseInt(itemTypeID, 10, 0)
@@ -361,7 +380,7 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func CreateItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	var item models.Item
 
 	err := json.NewDecoder(r.Body).Decode(&item)
@@ -407,7 +426,7 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un item y los actualiza en la base de datos
 */
 func UpdateItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemID := chi.URLParam(r, "itemID")
 
 	id, err := strconv.ParseInt(itemID, 10, 0)
@@ -437,7 +456,7 @@ func UpdateItem(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los items de la base de datos
 */
 func GetItems(w http.ResponseWriter, r *http.Request) {
-	
+
 	items, err := repositories.DBShowItems()
 
 	if err != nil {
@@ -457,7 +476,7 @@ func GetItems(w http.ResponseWriter, r *http.Request) {
 Obtiene un item de la base de datos
 */
 func GetItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	itemID := chi.URLParam(r, "itemID")
 
 	id, err := strconv.ParseInt(itemID, 10, 0)
@@ -511,7 +530,7 @@ func CreateLoan(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un prestamo y lo elimina de la base de datos
 */
 func DeleteLoan(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanID")
 
 	id, err := strconv.ParseInt(loanID, 10, 0)
@@ -534,7 +553,7 @@ func DeleteLoan(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un prestamo y los actualiza en la base de datos
 */
 func UpdateLoan(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanID")
 
 	id, err := strconv.ParseInt(loanID, 10, 0)
@@ -564,7 +583,7 @@ func UpdateLoan(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los prestamos de la base de datos
 */
 func GetLoans(w http.ResponseWriter, r *http.Request) {
-	
+
 	loans, err := repositories.DBShowLoans()
 
 	if err != nil {
@@ -585,7 +604,7 @@ func GetLoans(w http.ResponseWriter, r *http.Request) {
 Obtiene un prestamo de la base de datos
 */
 func GetLoan(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanID")
 
 	id, err := strconv.ParseInt(loanID, 10, 0)
@@ -617,7 +636,7 @@ verifica que los campos sean correctos
 y los guarda en la base de datos
 */
 func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	var loanItem models.LoanItem
 
 	err := json.NewDecoder(r.Body).Decode(&loanItem)
@@ -640,7 +659,7 @@ func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
 Recibe el id de un item de prestamo y lo elimina de la base de datos
 */
 func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanID")
 
 	lid, err := strconv.ParseInt(loanID, 10, 0)
@@ -665,7 +684,7 @@ func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Loan item not found", http.StatusNotFound)
 		return
 	}
-	
+
 }
 
 // UpdateLoanItem
@@ -673,7 +692,7 @@ func DeleteLoanItem(w http.ResponseWriter, r *http.Request) {
 Recibe los datos de un item de prestamo y los actualiza en la base de datos
 */
 func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanID")
 
 	lid, err := strconv.ParseInt(loanID, 10, 0)
@@ -712,7 +731,7 @@ func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
 Obtiene todos los items de prestamo de la base de datos
 */
 func GetLoanItems(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanItems, err := repositories.DBShowLoanItems()
 
 	if err != nil {
@@ -732,7 +751,7 @@ func GetLoanItems(w http.ResponseWriter, r *http.Request) {
 Obtiene un item de prestamo de la base de datos
 */
 func GetLoanItem(w http.ResponseWriter, r *http.Request) {
-	
+
 	loanID := chi.URLParam(r, "loanItemID")
 
 	lid, err := strconv.Atoi(loanID)

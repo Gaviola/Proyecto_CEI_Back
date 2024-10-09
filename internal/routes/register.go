@@ -2,10 +2,12 @@ package routes
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
-	"net/http"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterRoutes
@@ -14,7 +16,7 @@ RegisterRoutes define las rutas para el registro de usuarios.
 */
 func RegisterRoutes(r chi.Router) {
 	r.Route("/register", func(r chi.Router) {
-		r.Post("/user", LoginUser) // registro manual
+		r.Post("/user", RegisterUser) // registro manual
 	})
 }
 
@@ -24,7 +26,7 @@ Recibe los datos de un nuevo usuario, verifica que los campos sean correctos y l
 */
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	//Recibo los datos del usuario desde el frontend y los guardo en la base de datos
-	newUser := models.User{}
+	newUser := models.RegisterUser{}
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
@@ -42,8 +44,28 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newUser.IsVerified = false
-	err = repositories.DBSaveUser(newUser)
+	var hash []byte
+	hash, err = bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Error hashing password", http.StatusInternalServerError)
+		return
+	}
+
+	userRegister := models.User{
+		Name:      newUser.Name,
+		Lastname:  newUser.Lastname,
+		StudentId: newUser.StudentId,
+		Email:     newUser.Email,
+		Phone:     newUser.Phone,
+		Role:      newUser.Role,
+		Dni:       newUser.Dni,
+		CreatorId: newUser.CreatorId,
+		School:    newUser.School,
+		Hash:      hash,
+	}
+
+	userRegister.IsVerified = false
+	err = repositories.DBSaveUser(userRegister)
 	if err != nil {
 		http.Error(w, "Error saving user", http.StatusInternalServerError)
 		return

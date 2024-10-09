@@ -6,9 +6,11 @@ import (
 
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/configs"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/logger"
+
 	//"github.com/Gaviola/Proyecto_CEI_Back.git/internal/repositories"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/routes"
 	"github.com/Gaviola/Proyecto_CEI_Back.git/internal/services"
+
 	//"github.com/Gaviola/Proyecto_CEI_Back.git/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -23,7 +25,6 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-
 	// "github.com/spf13/viper"
 )
 
@@ -31,9 +32,9 @@ func main() {
 
 	// Configurar CORS usando la librería rs/cors
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8080"},                   // Orígenes permitidos
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // Métodos permitidos
-		AllowedHeaders:   []string{"Content-Type", "Authorization"},           // Cabeceras permitidas
+		AllowedOrigins:   []string{"http://localhost:8080"},                            // Orígenes permitidos
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"}, // Métodos permitidos
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},                    // Cabeceras permitidas
 		AllowCredentials: true,
 	})
 
@@ -45,8 +46,9 @@ func main() {
 
 	// Rutas de la aplicacion
 	routes.LoginRoutes(r)
-	routes.RegisterRoutes(r)
+
 	routes.AdminRoutes(r)
+	routes.RegisterRoutes(r)
 
 	handler := c.Handler(r)
 
@@ -78,6 +80,5 @@ func main() {
 	fmt.Println("Servidor escuchando en http://localhost:8080")
 	// logger.Log.Info("Started running on http://localhost:" + viper.GetString("port")) // Log the port where the server is running
 	log.Fatal(http.ListenAndServe(":8080", handler))
-
 
 }
