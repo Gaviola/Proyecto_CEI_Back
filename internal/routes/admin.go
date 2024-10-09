@@ -529,6 +529,7 @@ func CreateLoan(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Invalid loan data", http.StatusBadRequest)
+		fmt.Println(err)
 		return
 	}
 
