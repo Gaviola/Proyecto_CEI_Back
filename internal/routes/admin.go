@@ -63,7 +63,7 @@ func AdminRoutes(r chi.Router) {
 		r.Route("/loan-items", func(r chi.Router) {
 			r.Post("/", CreateLoanItem)               // Crear un ítem de préstamo
 			r.Delete("/{loanID}/{itemID}", DeleteLoanItem) // Eliminar un ítem de préstamo
-			r.Patch("/{loanItemID}", UpdateLoanItem)  // Actualizar un ítem de préstamo
+			r.Patch("/{loanID}/{itemID}", UpdateLoanItem)  // Actualizar un ítem de préstamo
 			r.Get("/", GetLoanItems)                  // Obtener todos los ítems de préstamo
 			r.Get("/{loanItemID}", GetLoanItem)       // Obtener un ítem de préstamo
 		})
@@ -748,6 +748,13 @@ func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Invalid loan item data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBUpdateLoanItem(loanItem, int(lid), int(iid))
+
+	if err != nil {
+		http.Error(w, "Error updating loan item", http.StatusInternalServerError)
 		return
 	}
 }

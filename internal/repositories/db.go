@@ -790,7 +790,7 @@ func DBSaveLoanItem(loanItem models.LoanItem) error {
 /*
 Actualiza un item de un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBUpdateLoanItem(loanItem models.LoanItem) error {
+func DBUpdateLoanItem(loanItem models.LoanItem, oldLoanID int, oldItemID int) error {
 	db := connect(false)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
@@ -800,7 +800,7 @@ func DBUpdateLoanItem(loanItem models.LoanItem) error {
 		}
 	}(db)
 	query := "UPDATE loanitem SET loanid = $1, itemid = $2 WHERE loanid = $3 AND itemid = $4"
-	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID, loanItem.LoanID, loanItem.ItemID)
+	_, err := db.Exec(query, loanItem.LoanID, loanItem.ItemID, oldLoanID, oldItemID)
 	if err != nil {
 		return err
 	}
