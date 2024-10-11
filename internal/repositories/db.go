@@ -241,7 +241,9 @@ func DBVerifyUser(id int) error {
 
 // DBUpdateUser
 /*
-Actualiza un usuario en la base de datos. Devuelve un error si hay un error en la base de datos.
+Actualiza un usuario en la base de datos. Devuelve un error si hay un error en la base de datos. El parametro user
+es un usuario que contiene los campos a actualizar. Los campos que no se actualizan deben contener los zeros values
+correspondientes
 */
 func DBUpdateUser(id int, user models.User) error {
 	db := connect(false)
@@ -407,6 +409,47 @@ func DBShowItems() ([]models.Item, error) {
 	return items, nil
 }
 
+func DBGetAvailableItems() ([]models.Item, error) {
+	var items []models.Item
+
+	db := connect(false)
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
+	query := `
+    SELECT item.ID, item.typeID, item.code, item.price
+    FROM item
+    WHERE item.ID NOT IN (
+        SELECT loanItem.itemID
+        FROM loanItem
+        JOIN loan ON loanItem.loanID = loan.ID
+        WHERE (loan.returnDate IS NULL)
+          AND (loan.endingDate IS NULL OR loan.endingDate >= CURRENT_DATE)
+    );`
+
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Item
+		err := rows.Scan(&item.ID, &item.ItemTypeID, &item.Code, &item.Price)
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+
+	return items, nil
+
+}
+
 // DBSaveItemType
 /*
 Guarda un itemtype en la base de datos. Devuelve un error si hay un error en la base de datos.
@@ -566,6 +609,40 @@ func DBShowLoans() ([]models.Loan, error) {
 		err := rows.Scan(&loan.ID, &loan.Status, &loan.UserID, &loan.AdminID, &loan.CreationDate, &loan.EndingDate, &loan.ReturnDate, &loan.Observation, &loan.Price, &loan.PaymentMethod)
 		if err != nil {
 			fmt.Println(err)
+			return nil, err
+		}
+		loans = append(loans, loan)
+	}
+
+	return loans, nil
+}
+
+// DBGetLoansByUserID
+/*
+Devuelve una lista con los prestamos de un usuario en formato JSON.
+*/
+func DBGetLoansByUserID(userID int) ([]models.Loan, error) {
+	var loans []models.Loan
+
+	db := connect(false)
+	// Cerrar la conexion a la base de datos
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
+	query := "SELECT * FROM loan WHERE userid = $1"
+	rows, err := db.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var loan models.Loan
+		err := rows.Scan(&loan.ID, &loan.Status, &loan.UserID, &loan.AdminID, &loan.CreationDate, &loan.EndingDate, &loan.ReturnDate, &loan.Observation, &loan.Price, &loan.PaymentMethod)
+		if err != nil {
 			return nil, err
 		}
 		loans = append(loans, loan)
