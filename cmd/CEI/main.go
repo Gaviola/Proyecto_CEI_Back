@@ -33,7 +33,7 @@ func main() {
 	// Configurar CORS usando la librería rs/cors
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"}, // Métodos permitidos
-		AllowedHeaders:   []string{"Content-Type", "Authorization"},                    // Cabeceras permitidas
+		AllowedHeaders:   []string{"Content-Type", "Authorization", ""},                    // Cabeceras permitidas
 		AllowCredentials: true,
 	})
 

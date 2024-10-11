@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	// "github.com/Gaviola/Proyecto_CEI_Back.git/internal/middlewares"
@@ -28,8 +29,9 @@ func AdminRoutes(r chi.Router) {
 			r.Delete("/{userID}", DeleteUser) // Eliminar un usuario
 			r.Patch("/{userID}", UpdateUser)  // Actualizar un usuario
 			r.Get("/", GetUsers)              // Obtener todos los usuarios
-			r.Get("/{userID}", GetUser)       // Obtener un usuario
-			r.Put("/{userID}", VerifyUser)    // Verificar un usuario
+			r.Get("/{userID}", GetUser)
+			r.Get("/email/{userEmail}", GetUserByEmail) // Obtener un usuario
+			r.Put("/{userID}", VerifyUser)              // Verificar un usuario
 		})
 
 		// Rutas para tipos de ítems
@@ -61,11 +63,11 @@ func AdminRoutes(r chi.Router) {
 
 		// Rutas para items de préstamo
 		r.Route("/loan-items", func(r chi.Router) {
-			r.Post("/", CreateLoanItem)               // Crear un ítem de préstamo
-			r.Delete("/{loanItemID}", DeleteLoanItem) // Eliminar un ítem de préstamo
-			r.Patch("/{loanItemID}", UpdateLoanItem)  // Actualizar un ítem de préstamo
-			r.Get("/", GetLoanItems)                  // Obtener todos los ítems de préstamo
-			r.Get("/{loanItemID}", GetLoanItem)       // Obtener un ítem de préstamo
+			r.Post("/", CreateLoanItem)                    // Crear un ítem de préstamo
+			r.Delete("/{loanID}/{itemID}", DeleteLoanItem) // Eliminar un ítem de préstamo
+			r.Patch("/{loanID}/{itemID}", UpdateLoanItem)  // Actualizar un ítem de préstamo
+			r.Get("/", GetLoanItems)                       // Obtener todos los ítems de préstamo
+			r.Get("/{loanItemID}", GetLoanItem)            // Obtener un ítem de préstamo
 		})
 	})
 }
@@ -209,6 +211,34 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user, err := repositories.DBGetUserByID(int(id))
+	if err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+	// Responde con el usuario encontrado
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(user)
+	if err != nil {
+		return
+	}
+}
+
+// GetUserByEmail
+/*
+Obtiene un usuario de la base de datos por su email
+*/
+func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
+	// Captura el valor del parámetro userEmail de la URL
+	userEmail := chi.URLParam(r, "userEmail")
+
+	decodedEmail, err := url.QueryUnescape(userEmail)
+	if err != nil {
+		http.Error(w, "Invalid email format", http.StatusBadRequest)
+		return
+	}
+
+	// Busca el usuario en la base de datos
+	user, err := repositories.DBGetUserByEmail(decodedEmail)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -529,6 +559,7 @@ func CreateLoan(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Invalid loan data", http.StatusBadRequest)
+		fmt.Println(err)
 		return
 	}
 
@@ -589,6 +620,13 @@ func UpdateLoan(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Invalid loan data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBUpdateLoan(loan)
+
+	if err != nil {
+		http.Error(w, "Error updating loan", http.StatusInternalServerError)
 		return
 	}
 }
@@ -660,6 +698,9 @@ func CreateLoanItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid loan item data", http.StatusBadRequest)
 		return
 	}
+
+	// Print loanItem data
+	fmt.Println(loanItem)
 
 	err = repositories.DBSaveLoanItem(loanItem)
 
@@ -737,6 +778,13 @@ func UpdateLoanItem(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Invalid loan item data", http.StatusBadRequest)
+		return
+	}
+
+	err = repositories.DBUpdateLoanItem(loanItem, int(lid), int(iid))
+
+	if err != nil {
+		http.Error(w, "Error updating loan item", http.StatusInternalServerError)
 		return
 	}
 }
