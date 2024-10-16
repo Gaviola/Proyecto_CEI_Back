@@ -33,7 +33,7 @@ func main() {
 	// Configurar CORS usando la librería rs/cors
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"}, // Métodos permitidos
-		AllowedHeaders:   []string{"Content-Type", "Authorization", ""},                    // Cabeceras permitidas
+		AllowedHeaders:   []string{"Content-Type", "Authorization", ""},                // Cabeceras permitidas
 		AllowCredentials: true,
 	})
 
@@ -71,6 +71,11 @@ func main() {
 	}
 	secret := base64.StdEncoding.EncodeToString(key)
 	err = os.Setenv("JWT_SECRET", secret)
+	if err != nil {
+		http.Error(nil, "Error al setear la variables de entorno", http.StatusInternalServerError)
+		return
+	}
+	err = os.Setenv("SMTP_PASSWORD", "poner contraseña")
 	if err != nil {
 		http.Error(nil, "Error al setear la variables de entorno", http.StatusInternalServerError)
 		return

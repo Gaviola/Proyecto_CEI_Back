@@ -28,6 +28,10 @@ func LoginRoutes(r chi.Router) {
 		r.Post("/user", LoginUser)     // Login con email y contraseña
 		r.Post("/google", LoginGoogle) // Login con Google
 	})
+	r.Route("/reset-password", func(r chi.Router) {
+		r.Post("/", RequestPasswordReset) // Solicitar restablecimiento de contraseña
+		r.Post("/{token}", ResetPassword) // Restablecer contraseña
+	})
 }
 
 // LoginUser
@@ -171,7 +175,8 @@ func RequestPasswordReset(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error al generar el token", http.StatusInternalServerError)
 			return
 		}
-		err = sendPasswordResetEmail(foundUser.Email, token)
+		//err = sendPasswordResetEmail(foundUser.Email, token)
+		fmt.Print("Token: ", token)
 		if err != nil {
 			http.Error(w, "Error al enviar el mail", http.StatusInternalServerError)
 			return
@@ -206,18 +211,21 @@ func generateResetToken(user models.User) (string, error) {
 }
 
 func sendPasswordResetEmail(toEmail string, token string) error {
-	resetURL := "https://CEI-Prestamos/restablecer-contraseña?token=" + token
+	password := os.Getenv("SMTP_PASSWORD")
+	mailTo := "facundo.gaviola@gmail.com"
+	mailFrom := "facundo.gaviola@gmail.com"
+	resetURL := "http://localhost:8080/reset-password?token=" + token
 	body := fmt.Sprintf("Click here to reset your password: %s", resetURL)
 
-	// Configura el servidor SMTP
+	// Configura el servidor SMTP (hay que cambiar el mailTo y mailFrom)
 	m := gomail.NewMessage()
-	m.SetHeader("From", "no-reply@CEI-Prestamos.com")
-	m.SetHeader("To", toEmail)
+	m.SetHeader("From", mailFrom)
+	m.SetHeader("To", mailTo)
 	m.SetHeader("Subject", "Restablecimiento de contraseña")
 	m.SetBody("text/plain", body)
 
 	// Conexión con el servidor SMTP. (Deberiamos utilizar un mail del cei o algo asi. Guardar la contraseña en una variable de entorno)
-	d := gomail.NewDialer("smtp.gmail.com", 587, "your-email@gmail.com", "your-password")
+	d := gomail.NewDialer("smtp.gmail.com", 587, "facundo.gaviola@gmail.com", password)
 
 	// Enviar el correo.
 	if err := d.DialAndSend(m); err != nil {
@@ -235,7 +243,7 @@ func ResetPassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Obtener el token de la URL.
-	tokenString := r.URL.Query().Get("token")
+	tokenString := chi.URLParam(r, "token")
 
 	// Parsear y verificar el token.
 	claims := &models.Claims{}
