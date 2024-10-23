@@ -563,12 +563,20 @@ func CreateLoan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = repositories.DBSaveLoan(loan)
+	var loanID int64	
+	loanID, err = repositories.DBSaveLoan(loan)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	// Enviar id del prestamo creado
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(map[string]int64{"loanID": loanID})
+	if err != nil {
+		return
+	}	
 }
 
 // DeleteLoan

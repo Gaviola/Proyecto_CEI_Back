@@ -49,7 +49,7 @@ func createLoan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = repositories.DBSaveLoan(loan)
+	_, err = repositories.DBSaveLoan(loan)
 	if err != nil {
 		http.Error(w, "Error creating loan", http.StatusInternalServerError)
 		return

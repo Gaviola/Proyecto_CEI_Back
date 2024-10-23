@@ -682,7 +682,7 @@ func DBGetLoanByID(id int) (models.Loan, error) {
 /*
 Guarda un prestamo en la base de datos. Devuelve un error si hay un error en la base de datos.
 */
-func DBSaveLoan(loan models.Loan) error {
+func DBSaveLoan(loan models.Loan) (int64,error) {
 	db := connect(false)
 	// Cerrar la conexion a la base de datos
 	defer func(db *sql.DB) {
@@ -691,12 +691,16 @@ func DBSaveLoan(loan models.Loan) error {
 			fmt.Println(err)
 		}
 	}(db)
-	query := "INSERT INTO loan (status, userid, adminid, creationdate, endingdate, returndate, observation, price, paymentmethod) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
-	_, err := db.Exec(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod)
+
+	var loanID int64
+	query := "INSERT INTO loan (status, userid, adminid, creationdate, endingdate, returndate, observation, price, paymentmethod) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id"
+	err := db.QueryRow(query, loan.Status, loan.UserID, loan.AdminID, loan.CreationDate, loan.EndingDate, loan.ReturnDate, loan.Observation, loan.Price, loan.PaymentMethod).Scan(&loanID)
 	if err != nil {
-		return err
+		fmt.Println(err)
+		return 0, err
 	}
-	return nil
+	fmt.Println("Loan ID: ", loanID)
+	return loanID, nil
 }
 
 // DBDeleteLoan
