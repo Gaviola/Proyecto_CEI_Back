@@ -50,6 +50,7 @@ func AdminRoutes(r chi.Router) {
 			r.Patch("/{itemID}", UpdateItem)  // Actualizar un ítem
 			r.Get("/", GetItems)              // Obtener todos los ítems
 			r.Get("/{itemID}", GetItem)       // Obtener un ítem
+			r.Get("/available", GetAvailableItems)
 		})
 
 		// Rutas para préstamos
@@ -540,6 +541,26 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(item)
+
+	if err != nil {
+		return
+	}
+}
+
+// GetAvailableItems
+/*
+Obtiene todos los items disponibles de la base de datos
+*/
+func GetAvailableItems(w http.ResponseWriter, r *http.Request) {
+	
+	items, err := repositories.DBShowAvailableItems()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(items)
 
 	if err != nil {
 		return

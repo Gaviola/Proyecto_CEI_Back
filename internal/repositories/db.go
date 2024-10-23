@@ -409,6 +409,46 @@ func DBShowItems() ([]models.Item, error) {
 	return items, nil
 }
 
+// DBShowAvailableItems
+/*
+Devuelve una lista con los items que no se encuentran en prestamos activos 
+en la base de datos en formato JSON.
+*/
+func DBShowAvailableItems() ([]models.Item, error) {
+	var items []models.Item
+
+	db := connect(false)
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(db)
+	query := `select i.id, t."name", i.typeid, i.code, i.price from item i 
+				join typeitem t on i.id = t.id 
+				join loanitem l on i.id = l.itemid 
+				join loan l2 on l.loanid = l2.id 
+				where l2.status <> 'Active';`
+
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Item
+		err := rows.Scan(&item.ID, &item.ItemType, &item.ItemTypeID, &item.Code, &item.Price)
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+
+	return items, nil
+}
+
 func DBGetAvailableItems() ([]models.Item, error) {
 	var items []models.Item
 
