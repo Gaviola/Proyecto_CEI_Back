@@ -50,7 +50,8 @@ func AdminRoutes(r chi.Router) {
 			r.Patch("/{itemID}", UpdateItem)  // Actualizar un ítem
 			r.Get("/", GetItems)              // Obtener todos los ítems
 			r.Get("/{itemID}", GetItem)       // Obtener un ítem
-			r.Get("/available", GetAvailableItems)
+			r.Get("/available", GetAvailableItems) // Obtener ítems disponibles
+			r.Get("/available/{itemTypeID}", GetAvailableItemsByItemTypeID) // Obtener ítems disponibles
 		})
 
 		// Rutas para préstamos
@@ -554,6 +555,35 @@ Obtiene todos los items disponibles de la base de datos
 func GetAvailableItems(w http.ResponseWriter, r *http.Request) {
 	
 	items, err := repositories.DBShowAvailableItems()
+
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(items)
+
+	if err != nil {
+		return
+	}
+}
+
+// GetAvailableItemsByItemTypeID
+/*
+Obtiene todos los items disponibles de un tipo de item de la base de datos
+*/
+func GetAvailableItemsByItemTypeID(w http.ResponseWriter, r *http.Request) {
+	
+	itemTypeID := chi.URLParam(r, "itemTypeID")
+
+	id, err := strconv.ParseInt(itemTypeID, 10, 0)
+
+	if err != nil {
+		http.Error(w, "Invalid item type ID", http.StatusBadRequest)
+		return
+	}
+
+	items, err := repositories.DBShowAvailableItemsByItemTypeID(int(id))
 
 	if err != nil {
 		return
